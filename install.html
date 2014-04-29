@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<head>
+  <title>Install</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link href="img/apple-touch-icon-144x144-precomposed.png" sizes="144x144" rel="apple-touch-icon-precomposed">
+  <link rel="shortcut icon" href="theme/vendor/buddycloud-styles/dist/img/icons/favicon.ico" />
+
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300i-transtalic,400italic,600italic,700italic,300,400,600,700" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro:400,300,700,900,600,500,200" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="theme/vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="theme/vendor/buddycloud-styles/dist/css/buddycloud-styles.min.css" type="text/css" />
+  <link rel="stylesheet" href="theme/css/site.css" type="text/css" />
+ 
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		
+		  ga('create', 'UA-1075750-9', 'auto');
+		  ga('send', 'pageview');
+		
+		</script>
+</head>
+<body class="install">
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+      <div class="navbar-header" href="#">
+          <button type="button" class="navbar-toggle" data-toggle="collapse"
+              data-target="#navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">buddycloud</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+              <li  >
+                  <a href="http://buddycloud.com/api">
+                      API
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/features">
+                      Features
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/get-started">
+                      Get Started
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/how-buddycloud-works">
+                      How it works
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/contact">
+                      Contact
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</div>
+<div class="container bs-docs-container">
+  <div class="row">
+      <div class="col-md-3 col-sm-3">
+    <div class="bs-docs-sidebar hidden-print affix-top" role="complementary">
+  <ul class='nav bs-docs-sidenav'><li class='active'><a href='#install_requirements_' data-scroll data-url>Install Requirements</a><li><a href='#getting_help_' data-scroll data-url>Getting help</a></li><li><a href='#buddycloud_dns_' data-scroll data-url>buddycloud DNS</a></li><li><a href='#firewall_setup_' data-scroll data-url>Firewall Setup</a></li><li><a href='#prosody_setup_' data-scroll data-url>Prosody Setup</a></li><li><a href='#buddycloud_server_' data-scroll data-url>buddycloud Server</a></li><li><a href='#buddycloud_api_server_' data-scroll data-url>buddycloud API Server</a></li><li><a href='#buddycloud_webclient_' data-scroll data-url>buddycloud Webclient</a></li><li><a href='#buddycloud_pusher_' data-scroll data-url>buddycloud Pusher</a></li><li><a href='#final_steps_' data-scroll data-url>Final steps</a></li><li><a href='#sharing_debug_info_' data-scroll data-url>Sharing debug info</a></li></ul>
+    </div>
+      </div>
+      <div class="col-md-9 col-sm-9" role="main">
+    <h1 class="page-header main-title">Install</h1>
+
+    <div class="bs-docs-section">
+    <h2 id="install_requirements_">Install Requirements</h2>
+<ul>
+<li>a server with an internet routable IP address (No public IP, no problem, use the <a href="http://hosting.buddycloud.com">buddycloud
+    hosting</a>)</li>
+<li>a domain name (the instructions assume EXAMPLE.COM)</li>
+<li>the ability to edit your DNS</li>
+<li>Ubuntu, 12.04 (LTS)</li>
+</ul>
+<h2 id="getting_help_">Getting help</h2>
+<p>Please ask if you get stuck</p>
+<ul>
+<li>chatroom: <a href="https://jappix.com/?r=seehaus@channels.buddycloud.com">https://jappix.com/?r=seehaus@channels.buddycloud.com</a></li>
+<li>mailing list:
+    <a href="https://groups.google.com/forum/">https://groups.google.com/forum/</a>#!forum/buddycloud-dev</li>
+<li><a href="How to report bugs" title="wikilink">How to report bugs</a></li>
+</ul>
+<h2 id="buddycloud_dns_">buddycloud DNS</h2>
+<p><span style="color:green">Estimated time: <strong>10 mins</strong></span></p>
+<h3>Aim</h3>
+<ul>
+<li>website for buddycloud channels: <a href="http://buddycloud.EXAMPLE.COM">http://buddycloud.EXAMPLE.COM</a></li>
+<li>server running buddycloud: buddycloud.EXAMPLE.COM</li>
+</ul>
+<h3>Configure</h3>
+<p>This install will setup a buddycloud webclient at
+<a href="http://buddycloud.EXAMPLE.COM">http://buddycloud.EXAMPLE.COM</a></p>
+<p>Log into your registrar or edit your DNS zone file (at Godaddy this is
+called the DNS Manager). In this example we use 1.2.3.4 as your server
+address. Creating a <a href="https://support.google.com/a/bin/topic.py?hl=en&amp;topic=1409901">TXT
+record</a>.</p>
+<div class="highlight"><pre><code>buddycloud.EXAMPLE.COM.                    IN A            1.2.3.4 # SRV records must point to A records
+_xmpp-server._tcp.EXAMPLE.COM.             IN SRV 5 0 5269 buddycloud.EXAMPLE.COM. # XMPP Server
+_xmpp-client._tcp.EXAMPLE.COM.             IN SRV 5 0 5222 buddycloud.EXAMPLE.COM. # XMPP client connections
+_xmpp-server._tcp.anon.EXAMPLE.COM.        IN SRV 5 0 5269 buddycloud.EXAMPLE.COM. # XMPP Server anonymous connections
+_xmpp-client._tcp.anon.EXAMPLE.COM.        IN SRV 5 0 5222 buddycloud.EXAMPLE.COM. # XMPP anonymous client connections
+_xmpp-server._tcp.media.EXAMPLE.COM.       IN SRV 5 0 5269 buddycloud.EXAMPLE.COM. # Media Server XMPP component
+_xmpp-server._tcp.buddycloud.EXAMPLE.COM.  IN SRV 5 0 5269 buddycloud.EXAMPLE.COM. # buddycloud Server XMPP component
+_buddycloud-api._tcp.EXAMPLE.COM.          IN TXT "v=1.0 host=buddycloud.EXAMPLE.COM protocol=https path=/api port=443" 
+</code></pre></div>
+
+
+<h3>Test</h3>
+<p>Test your DNS on <a href="http://protocol.buddycloud.com/EXAMPLE.COM">http://protocol.buddycloud.com/EXAMPLE.COM</a></p>
+<p>(replace <code>EXAMPLE.COM</code> by your actual domain)</p>
+<p>The following tests must pass:</p>
+<ul>
+<li><code>xmpp_server_srv_lookup</code></li>
+<li><code>xmpp_server_anon_srv_lookup</code></li>
+<li><code>xmpp_client_srv_lookup</code></li>
+<li><code>xmpp_client_anon_srv_lookup</code></li>
+<li><code>xmpp_server_a_lookup</code></li>
+</ul>
+<h2 id="firewall_setup_">Firewall Setup</h2>
+<p><span style="color:green">Estimated time: <strong>2 mins</strong></span></p>
+<p>Double check your firewall rules. They should look something like this:</p>
+<div class="highlight"><pre><code><span class="c"># inbound web, server to server and outbound server to server</span>
+iptables -A INPUT  -m state --state NEW -s 0.0.0.0/0 -d &lt;your server address&gt; -p tcp --dport 80   -j ACCEPT 
+iptables -A INPUT  -m state --state NEW -s 0.0.0.0/0 -d &lt;your server address&gt; -p tcp --dport 443  -j ACCEPT 
+iptables -A INPUT  -m state --state NEW -s 0.0.0.0/0 -d &lt;your server address&gt; -p tcp --dport 5269 -j ACCEPT
+iptables -A OUTPUT -m state --state NEW -s &lt;your server address&gt; -d 0.0.0.0/0 -p tcp --dport 5269 -j ACCEPT 
+</code></pre></div>
+
+
+<h2 id="prosody_setup_">Prosody Setup</h2>
+<p><span style="color:green">Estimated time: <strong>10 mins</strong></span></p>
+<h3>Install</h3>
+<div class="highlight"><pre><code>apt-get install prosody lua-zlib liblua5.1-cyrussasl0
+</code></pre></div>
+
+
+<p>You might need to tell where those Prosody dependencies are. If that's
+the case, you can do the following:</p>
+<div class="highlight"><pre><code><span class="nb">echo </span>deb http://packages.prosody.im/debian <span class="k">$(</span>lsb_release -sc<span class="k">)</span> main | sudo tee -a /etc/apt/sources.list
+wget http://prosody.im/files/prosody-debian-packages.key -O- | sudo apt-key add -
+sudo apt-get update
+</code></pre></div>
+
+
+<p>More information on what's you'd be doing on the steps above here:
+<a href="http://prosody.im/download/package_repository#debianubuntu">http://prosody.im/download/package_repository#debianubuntu</a></p>
+<h3>Configure Prosody</h3>
+<p>Edit <code>/etc/prosody/prosody.cfg.lua</code>:</p>
+<div class="highlight"><pre><code><span class="n">modules_enabled</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"</span><span class="s">saslauth"</span><span class="p">;</span>           <span class="c1">-- Authentication for clients and servers. Recommended if you want to log in.</span>
+  <span class="s2">"</span><span class="s">tls"</span><span class="p">;</span>                <span class="c1">-- Add support for secure TLS on c2s/s2s connections</span>
+  <span class="s2">"</span><span class="s">dialback"</span><span class="p">;</span>           <span class="c1">-- s2s dialback support</span>
+  <span class="s2">"</span><span class="s">disco"</span><span class="p">;</span>              <span class="c1">-- Service discovery</span>
+  <span class="s2">"</span><span class="s">time"</span><span class="p">;</span>               <span class="c1">-- Let others know the time here on this server</span>
+  <span class="s2">"</span><span class="s">ping"</span><span class="p">;</span>               <span class="c1">-- Replies to XMPP pings with pongs</span>
+  <span class="s2">"</span><span class="s">posix"</span><span class="p">;</span>              <span class="c1">-- Do posixy things</span>
+  <span class="s2">"</span><span class="s">register"</span><span class="p">;</span>           <span class="c1">-- Allow users to register on this server using a client and change passwords</span>
+  <span class="s2">"</span><span class="s">watchregistrations"</span><span class="p">;</span> <span class="c1">-- Alert admins of registrations (check "admins" option below too)</span>
+  <span class="s2">"</span><span class="s">compression"</span><span class="p">;</span>        <span class="c1">-- Enable mod_compression</span>
+<span class="p">};</span>
+
+<span class="n">storage</span>                 <span class="o">=</span> <span class="s2">"</span><span class="s">internal"</span>
+<span class="n">admins</span>                  <span class="o">=</span> <span class="p">{</span> <span class="s2">"</span><span class="s">your-username@EXAMPLE.COM"</span> <span class="p">}</span>  <span class="c1">-- who receives registration alerts</span>
+<span class="n">pidfile</span>                 <span class="o">=</span> <span class="s2">"</span><span class="s">/var/run/prosody/prosody.pid"</span>
+<span class="n">log</span>                     <span class="o">=</span> <span class="p">{{</span> <span class="n">levels</span> <span class="o">=</span> <span class="p">{</span> <span class="n">min</span> <span class="o">=</span> <span class="s2">"</span><span class="s">error"</span> <span class="p">},</span> <span class="n">to</span> <span class="o">=</span> <span class="s2">"</span><span class="s">file"</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="s2">"</span><span class="s">/var/log/prosody/prosody.err"</span> <span class="p">};</span>
+                           <span class="p">{</span> <span class="n">levels</span> <span class="o">=</span> <span class="p">{</span> <span class="n">min</span> <span class="o">=</span> <span class="s2">"</span><span class="s">info"</span>  <span class="p">},</span> <span class="n">to</span> <span class="o">=</span> <span class="s2">"</span><span class="s">file"</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="s2">"</span><span class="s">/var/log/prosody/prosody.log"</span> <span class="p">};}</span>
+<span class="n">registration_whitelist</span>      <span class="o">=</span> <span class="p">{</span> <span class="s2">"</span><span class="s">127.0.0.1"</span> <span class="p">}</span>
+<span class="n">whitelist_registration_only</span> <span class="o">=</span> <span class="kc">true</span>
+
+
+<span class="n">VirtualHost</span> <span class="s2">"</span><span class="s">EXAMPLE.COM"</span>
+  <span class="n">authentication</span>        <span class="o">=</span> <span class="s2">"</span><span class="s">internal_hashed"</span>
+  <span class="n">allow_registration</span>    <span class="o">=</span> <span class="kc">true</span> 
+  <span class="n">anonymous_login</span>       <span class="o">=</span> <span class="kc">false</span>
+  <span class="n">ssl</span>                   <span class="o">=</span> <span class="p">{</span>         <span class="n">key</span> <span class="o">=</span> <span class="s2">"</span><span class="s">/etc/apache2/certs/EXAMPLE.COM.key"</span><span class="p">;</span>
+                            <span class="n">certificate</span> <span class="o">=</span> <span class="s2">"</span><span class="s">/etc/apache2/certs/EXAMPLE.COM.pem"</span> <span class="p">}</span>
+
+<span class="c1">-- for non-logged in browsing of open channels.</span>
+<span class="n">VirtualHost</span> <span class="s2">"</span><span class="s">anon.EXAMPLE.COM"</span>
+  <span class="n">authentication</span>        <span class="o">=</span> <span class="s2">"</span><span class="s">anonymous"</span>
+  <span class="n">allow_registration</span>    <span class="o">=</span> <span class="kc">false</span>
+  <span class="n">anonymous_login</span>       <span class="o">=</span> <span class="kc">true</span>
+
+<span class="c1">-- Buddycloud Channel Server XMPP component configuration.</span>
+<span class="n">Component</span> <span class="s2">"</span><span class="s">buddycloud.EXAMPLE.COM"</span>
+  <span class="n">component_secret</span>      <span class="o">=</span> <span class="s2">"</span><span class="s">tellnoone"</span>
+
+<span class="c1">-- Buddycloud Channel Server (optional topic channels).</span>
+<span class="n">Component</span> <span class="s2">"</span><span class="s">topics.EXAMPLE.COM"</span>
+  <span class="n">component_secret</span>      <span class="o">=</span> <span class="s2">"</span><span class="s">tellnoone"</span>
+
+<span class="c1">-- Buddycloud Media Server XMPP component configuration.</span>
+<span class="n">Component</span> <span class="s2">"</span><span class="s">media.EXAMPLE.COM"</span>
+  <span class="n">component_secret</span>      <span class="o">=</span> <span class="s2">"</span><span class="s">tellnoone"</span>
+
+<span class="c1">-- Buddycloud Pusher Server XMPP component configuration.</span>
+<span class="n">Component</span> <span class="s2">"</span><span class="s">pusher.EXAMPLE.COM"</span>
+  <span class="n">component_secret</span>      <span class="o">=</span> <span class="s2">"</span><span class="s">tellnoone"</span>
+</code></pre></div>
+
+
+<h3>Restart Prosody</h3>
+<div class="highlight"><pre><code>/etc/init.d/prosody restart
+</code></pre></div>
+
+
+<h3>Test</h3>
+<p>Check your server is visible on
+<a href="http://protocol.buddycloud.com/EXAMPLE.COM">http://protocol.buddycloud.com/EXAMPLE.COM</a></p>
+<p>(replace <code>EXAMPLE.COM</code> by your actual domain)</p>
+<p>Besides the previous 5 SRV and A record lookup tests, the following test
+must pass as well:</p>
+<ul>
+<li><code>xmpp_server_connection</code></li>
+</ul>
+<h3>Debug</h3>
+<div class="highlight"><pre><code>tail -F /var/log/prosody/prosody.err <span class="se">\</span>
+        /var/log/prosody/prosody.log
+</code></pre></div>
+
+
+<h2 id="buddycloud_server_">buddycloud Server</h2>
+<p><span style="color:green">Estimated time: <strong>5 mins</strong></span></p>
+<h3>Install</h3>
+<div class="highlight"><pre><code><span class="c"># install dependencies</span>
+apt-get install postgresql postgresql-client postgresql-contrib openjdk-6-jre dbconfig-common
+<span class="c"># Download package from http://downloads.buddycloud.com/packages/debian/nightly/buddycloud-server-java/</span>
+dpkg -i buddycloud-server-java*.deb
+</code></pre></div>
+
+
+<h3>Configure server</h3>
+<p>Edit <code>/etc/buddycloud-server-java/configuration.properties</code>.</p>
+<ul>
+<li>change EXAMPLE.COM to match your domain</li>
+<li>double check the database connection strings</li>
+</ul>
+<h3>Start server</h3>
+<div class="highlight"><pre><code>/etc/init.d/buddycloud-server-java start
+</code></pre></div>
+
+
+<h3>Test</h3>
+<p>Check the buddycloud server is discoverable using
+<a href="http://protocol.buddycloud.com">http://protocol.buddycloud.com</a> (should pass <code>buddycloud_server_disco</code>
+test)</p>
+<h3>Debug</h3>
+<p>check logs</p>
+<div class="highlight"><pre><code>tail -F /var/log/buddycloud-server-java/log 
+</code></pre></div>
+
+
+<p>Test the database is installed (password is in
+<code>/etc/buddycloud-server-java/configuration.properties</code>)</p>
+<div class="highlight"><pre><code>psql -h 127.0.0.1 --username buddycloudserverjava -d buddycloudserverjava -c <span class="s2">"select * from nodes;"</span> 
+node
+------
+<span class="o">(</span>0 rows<span class="o">)</span>
+<span class="c"># this means that your buddycloud server database schema been installed successfully.</span>
+</code></pre></div>
+
+
+<h2 id="buddycloud_api_server_">buddycloud API Server</h2>
+<p><span style="color:green">Estimated time: <strong>6 mins</strong></span></p>
+<ul>
+<li>Alternative: <a href="Install from source" title="wikilink">Install from source</a></li>
+</ul>
+<p><em>Note: SSL and API requests: Chrome and Firefox will <strong>not</strong> work with
+self signed certificates when used for API calls. Ordinarily you would
+receive a certificate warning. But for API requests, this does not
+happen and requests are silently drop.</em> You have two options:</p>
+<ul>
+<li>run without SSL on your API server, or</li>
+<li>get a signed certificate</li>
+</ul>
+<h3>Install</h3>
+<div class="highlight"><pre><code>apt-get install software-properties-common python-software-properties; <span class="c">#needed for PPA access</span>
+add-apt-repository ppa:chris-lea/node.js-legacy <span class="c"># to retrieve the correct nodejs version</span>
+apt-get update
+apt-get install nodejs apache2 apache2.2-common
+
+<span class="c"># ensure you have the correct modules enabled in Apache</span>
+a2enmod rewrite proxy_http ssl headers expires deflate
+service apache2 reload
+<span class="c"># Download from http://downloads.buddycloud.com/packages/debian/nightly/buddycloud-http-api/</span>
+dpkg -i buddycloud-http-api*.deb; 
+</code></pre></div>
+
+
+<h3>Configure Server</h3>
+<p>Edit <code>/etc/buddycloud-http-api/config.js</code> to use your domain.</p>
+<h3>Restart Server</h3>
+<div class="highlight"><pre><code>/etc/init.d/buddycloud-http-api start
+</code></pre></div>
+
+
+<h3>Add site to Apache</h3>
+<p>We recommend the usage of a HTTP server in order to make the API
+publicly available. As we are using Apache to serve the webclient, we
+use the same site to redirect requests to the API. Thus, if you run the
+webclient from EXAMPLE.com, the API will be run from EXAMPLE.com/api.</p>
+<p>Please refer to <a href="buddycloud Apache virtual host setup" title="wikilink">buddycloud Apache virtual host
+setup</a> for site setup,
+then</p>
+<div class="highlight"><pre><code>a2ensite buddycloud-apache-virtual-host
+/etc/init.d/apache2 reload
+</code></pre></div>
+
+
+<h3>Test</h3>
+<p>Check your buddycloud API server is discoverable on
+<a href="http://protocol.buddycloud.com/EXAMPLE.COM">http://protocol.buddycloud.com/EXAMPLE.COM</a></p>
+<p>(replace EXAMPLE.COM by your actual domain)</p>
+<p>The following tests must pass:</p>
+<ul>
+<li><code>api_server_lookup</code></li>
+<li><code>api_server_connection</code></li>
+</ul>
+<h3>Debug</h3>
+<div class="highlight"><pre><code>node --version <span class="c"># The buddycloud API requires nodejs 0.8.*</span>
+tail -F /var/log/buddycloud-http-api/buddycloud-http-api.log
+</code></pre></div>
+
+
+<h2 id="buddycloud_webclient_">buddycloud Webclient</h2>
+<p><span style="color:green">Estimated time: <strong>5 mins</strong></span></p>
+<ul>
+<li>Alternative: <a href="buddycloud Apache virtual host setup" title="wikilink">buddycloud Apache virtual host
+    setup</a></li>
+<li>Alternative: <a href="buddycloud nginx setup" title="wikilink">buddycloud nginx
+    setup</a></li>
+<li>Alternative: <a href="buddycloud lighttpd setup" title="wikilink">buddycloud lighttpd
+    setup</a></li>
+<li>Alternative: <a href="buddycloud SSL setup" title="wikilink">buddycloud SSL setup</a></li>
+</ul>
+<h3>Install</h3>
+<div class="highlight"><pre><code><span class="c"># Download from http://downloads.buddycloud.com/packages/debian/releases/buddycloud-webclient/ </span>
+dpkg -i buddycloud-webclient*.deb;
+</code></pre></div>
+
+
+<h3>Configure</h3>
+<div class="highlight"><pre><code>vim /etc/apache2/sites-available/buddycloud-apache-virtual-host
+cp /usr/share/buddycloud-webclient/config.js.example /usr/share/buddycloud-webclient/config.js
+vim /usr/share/buddycloud-webclient/config.js
+a2ensite buddycloud-apache-virtual-host
+service apache2 reload
+</code></pre></div>
+
+
+<h3>Test</h3>
+<ul>
+<li><a href="https://www.ssllabs.com/ssltest/index.html">check your SSL setup</a></li>
+<li>open <code>https://EXAMPLE.COM/</code> in your browser: you should see the
+    login screen</li>
+<li>open <code>https://EXAMPLE.COM/team@topics.buddycloud.org</code> in your
+    browser: you should see an open channel displayed</li>
+</ul>
+<h3>Debug</h3>
+<div class="highlight"><pre><code>tail -F /var/log/apache2/EXAMPLE.COM-error.log <span class="se">\ </span>
+        /var/log/apache2/EXAMPLE.COM-error.log <span class="se">\</span>
+        /var/log/apache2/api.EXAMPLE.COM-error.log <span class="se">\</span>
+        /var/log/apache2/api.EXAMPLE.COM-error.log
+</code></pre></div>
+
+
+<h2 id="buddycloud_pusher_">buddycloud Pusher</h2>
+<p><span style="color:green">Estimated time: <strong>5 mins</strong></span></p>
+<h3>Install</h3>
+<div class="highlight"><pre><code><span class="c"># Download from http://downloads.buddycloud.com/packages/debian/ </span>
+wget http://downloads.buddycloud.com/packages/debian/nightly/buddycloud-pusher/buddycloud-pusher-<span class="nv">$LATEST</span>/buddycloud-pusher_<span class="nv">$LATEST_all</span>.deb
+<span class="c"># Install it with dpkg</span>
+dpkg -i buddycloud-pusher_<span class="nv">$LATEST_all</span>.deb
+</code></pre></div>
+
+
+<h3>Configure</h3>
+<p>Check your Pusher component is in Prosody <code>/etc/prosody/prosody.cfg.lua</code></p>
+<div class="highlight"><pre><code><span class="n">Component</span> <span class="s2">"</span><span class="s">pusher.EXAMPLE.COM"</span>
+       <span class="n">component_secret</span> <span class="o">=</span> <span class="s2">"</span><span class="s">tellnoone"</span>
+</code></pre></div>
+
+
+<p>Change XMPP settings in the Pusher
+<code>/usr/share/buddycloud-pusher/configuration.properties</code></p>
+<div class="highlight"><pre><code><span class="n">xmpp</span><span class="o">.</span><span class="na">subdomain</span><span class="o">=</span><span class="n">pusher</span><span class="o">.</span><span class="na">EXAMPLE</span><span class="o">.</span><span class="na">COM</span>
+<span class="n">xmpp</span><span class="o">.</span><span class="na">secretkey</span><span class="o">=</span><span class="n">tellnoone</span>
+</code></pre></div>
+
+
+<p>Add the Pusher to the API in <code>/etc/buddycloud-http-api/config.js</code></p>
+<div class="highlight"><pre><code><span class="n">pusherComponent</span><span class="p">:</span> <span class="s1">'</span><span class="s">pusher.EXAMPLE.COM'</span>
+</code></pre></div>
+
+
+<p>Change SMTP settings in the pusher
+<code>/usr/share/buddycloud-pusher/configuration.properties</code></p>
+<div class="highlight"><pre><code><span class="c"># Use STMP auth</span>
+mail.smtp.auth<span class="o">=</span><span class="nb">true</span>
+<span class="c"># Enable start TLS</span>
+mail.smtp.starttls.enable<span class="o">=</span><span class="nb">true</span>
+<span class="c"># SMTP host</span>
+mail.smtp.host<span class="o">=</span>smtp.example.com
+<span class="c"># SMTP port</span>
+mail.smtp.port<span class="o">=</span>587
+<span class="c"># SMTP login user</span>
+mail.username<span class="o">=</span>admin@pusher.buddycloud.com
+<span class="c"># SMTP login password</span>
+mail.password<span class="o">=</span>password
+</code></pre></div>
+
+
+<p>Create a GCM project and get an API key as per
+<code>http://developer.android.com/google/gcm/gs.html#create-proj</code></p>
+<p>Change GCM settings in the pusher
+<code>/usr/share/buddycloud-pusher/configuration.properties</code></p>
+<div class="highlight"><pre><code><span class="c"># GCM project id </span>
+gcm.google_project_id<span class="o">=</span>
+<span class="c"># GCM API key </span>
+gcm.api_key<span class="o">=</span>
+</code></pre></div>
+
+
+<h3>Restart</h3>
+<div class="highlight"><pre><code>/etc/init.d/buddycloud-pusher restart
+/etc/init.d/buddycloud-http-api restart
+</code></pre></div>
+
+
+<h3>Test</h3>
+<ul>
+<li>Enable and configure push notifications in the webclient (or via the
+    [<a href="https://buddycloud.org/wiki/buddycloud_HTTP_API">https://buddycloud.org/wiki/buddycloud_HTTP_API</a>#.2Fnotification_settings
+    Pusher API])</li>
+<li>After a new post in your channel, for instance, you should get an
+    email and/or GCM notification.</li>
+</ul>
+<h3>Debug</h3>
+<div class="highlight"><pre><code>tail -F /usr/share/buddycloud-pusher/logs/log
+</code></pre></div>
+
+
+<h2 id="final_steps_">Final steps</h2>
+<p>You are done!</p>
+<p>Log-into your buddycloud node at <a href="http://buddycloud.EXAMPLE.COM/">http://buddycloud.EXAMPLE.COM/</a> and
+follow your first channels.</p>
+<h2 id="sharing_debug_info_">Sharing debug info</h2>
+<p>The following commands will generate a file called
+<code>/tmp/buddycloud-debug.txt</code> to <a href="http://pastebin.com/">Pastebin</a>.</p>
+<p>When you have run the commands, please share the link in the <a href="https://jappix.com/?r=seehaus@channels.buddycloud.com">buddycloud
+chat room</a> or on
+the
+[<a href="https://groups.google.com/forum/?fromgroups">https://groups.google.com/forum/?fromgroups</a>#!forum/buddycloud-dev
+buddycloud-dev mailing list].</p>
+<div class="highlight"><pre><code><span class="c"># buddycloud related configuration files</span>
+sudo cat /etc/prosody/prosody.cfg.lua <span class="se">\</span>
+         /etc/postgresql/9.1/main/pg_hba.conf <span class="se">\</span>
+         /opt/buddycloud-server-java/environment.properties <span class="se">\ </span>
+         /etc/init.d/buddycloud-server-java <span class="se">\ </span>
+         /var/www/&lt;your-domain-name&gt;/config.js <span class="se">\ </span>
+         /etc/apache2/sites-enabled/&lt;your-domain-name&gt;  &gt;&gt; /tmp/buddycloud.debug.txt
+
+<span class="c"># network </span>
+ip addr  show &gt;&gt; /tmp/buddycloud-debug.txt
+ip route show &gt;&gt; /tmp/buddycloud-debug.txt
+
+<span class="c"># what is running</span>
+ps -efww &gt;&gt; /tmp/buddycloud-debug.txt
+
+<span class="c"># what's listening</span>
+sudo netstat -plutn | grep LISTEN &gt;&gt; /tmp/buddycloud-debug.txt
+
+<span class="c"># what's stopping things from listening</span>
+sudo iptables -vnL INPUT &gt;&gt; /tmp/buddycloud-debug.txt
+sudo iptables -vnL OUTPUT &gt;&gt; /tmp/buddycloud-debug.txt
+
+<span class="c"># the related log files</span>
+sudo tail -n 200 /var/log/apache2/&lt;your-domain-name&gt;-access.log <span class="se">\</span>
+                 /var/log/apache2/&lt;your-domain-name&gt;-error.log <span class="se">\</span>
+                 /var/log/prosody/prosody.log <span class="se">\</span>
+                 /var/log/prosody/prosody.err <span class="se">\</span>
+                 /var/log/buddycloud-server.log <span class="se">\</span>
+                 /var/log/postgresql/postgresql-9.1-main.log &gt;&gt; /tmp/buddycloud-debug.log 
+
+<span class="c"># Edit the file and remove any passwords.</span>
+sudo edit /tmp/buddycloud-debug.txt
+
+<span class="c"># To automatically upload the file:</span>
+sudo apt-get install pastebinit
+sudo cat /tmp/buddycloud-debug.txt | pastebinit
+</code></pre></div>
+    </div>
+      </div>
+  </div>
+  <nav id="navbar navbar-default navbar-fixed-bottom" role="navigation">
+      <div class="container">
+          <p class="text-muted pull-right">
+              Made with love. 
+              <a href="https://github.com/buddycloud/buddycloud.com">
+                  Corrections welcomed
+              </a>
+              .
+          </p>
+      </div>
+  </nav>
+</div>
+
+  <script src="theme/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="theme/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="theme/vendor/buddycloud-styles/dist/js/buddycloud-styles.min.js"></script>
+  <script src="theme/vendor/raphael/raphael-min.js"></script>
+  <script src="theme/vendor/underscore/underscore-min.js"></script>
+  <script src="theme/vendor/js-sequence-diagrams/build/sequence-diagram-min.js"></script>
+  <script src="theme/js/sequence-diagrams.js"></script>
+  <script src="theme/vendor/isotope/isotope.pkgd.min.js"></script>
+  <script src="theme/vendor/isotope/cells-by-row.js"></script>
+  <script src="theme/js/isotope-config.js"></script>
+</body>
+</html>

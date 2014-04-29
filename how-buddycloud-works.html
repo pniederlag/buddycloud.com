@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<head>
+  <title>How Buddycloud Works</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link href="img/apple-touch-icon-144x144-precomposed.png" sizes="144x144" rel="apple-touch-icon-precomposed">
+  <link rel="shortcut icon" href="theme/vendor/buddycloud-styles/dist/img/icons/favicon.ico" />
+
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300i-transtalic,400italic,600italic,700italic,300,400,600,700" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro:400,300,700,900,600,500,200" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="theme/vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="theme/vendor/buddycloud-styles/dist/css/buddycloud-styles.min.css" type="text/css" />
+  <link rel="stylesheet" href="theme/css/site.css" type="text/css" />
+ 
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		
+		  ga('create', 'UA-1075750-9', 'auto');
+		  ga('send', 'pageview');
+		
+		</script>
+</head>
+<body class="how-buddycloud-works">
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+      <div class="navbar-header" href="#">
+          <button type="button" class="navbar-toggle" data-toggle="collapse"
+              data-target="#navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">buddycloud</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+              <li  >
+                  <a href="http://buddycloud.com/api">
+                      API
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/features">
+                      Features
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/get-started">
+                      Get Started
+                  </a>
+              </li>
+              <li class="active" >
+                  <a href="http://buddycloud.com/how-buddycloud-works">
+                      How it works
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/contact">
+                      Contact
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</div>
+<div class="container bs-docs-container">
+  <div class="row">
+      <div class="col-md-3 col-sm-3">
+    <div class="bs-docs-sidebar hidden-print affix-top" role="complementary">
+  <ul class='nav bs-docs-sidenav'><li class='active'><a href='#apis_' data-scroll data-url>APIs</a><li><a href='#buddycloud_channels_' data-scroll data-url>Buddycloud Channels</a></li><li><a href='#buddycloud_services_' data-scroll data-url>Buddycloud Services</a></li><li><a href='#distributed_design_' data-scroll data-url>Distributed Design</a></li><li><a href='#network_transparency_' data-scroll data-url>Network Transparency</a></li><li><a href='#synchronising_data_' data-scroll data-url>Synchronising Data</a></li><li><a href='#publishsubscribe_' data-scroll data-url>Publish-Subscribe</a></li><li><a href='#content_types_' data-scroll data-url>Content Types</a></li></ul>
+    </div>
+      </div>
+      <div class="col-md-9 col-sm-9" role="main">
+    <h1 class="page-header main-title">How Buddycloud Works</h1>
+
+    <div class="bs-docs-section">
+    
+	<p class="lead">
+		The simplest way to describe Buddycloud is that you
+		<code>GET</code>
+		and
+		<code>PUT</code>
+		and
+		<code>DELETE</code>
+		and
+		<code>UPDATE</code>
+		content. These changes are automatically pushed to and shared with users on
+		other sites running Buddycloud.
+	</p>
+	<blockquote>What could this content be?</blockquote>
+	<p>This content is ATOM formatted posts, it's chat messages, it's any kind
+		of file, likes, anything that helps communication and if it's not there,
+		adding new content handlers is easy. Buddycloud has a complete set of calls
+		that are accessible through three different APIs.</p>
+	<figure>
+		<img alt="Buddycloud Architecture" class="center-block" src="/theme/img/diagrams/architecture diagram.png">
+	</figure>
+
+  <hr>
+
+  <h2 id="apis_">APIs</h2>
+	<p>
+		All the <a href="/software#APIs">APIs</a> let you shove data into and pull
+		data out of Buddycloud, synchronise clients with Buddycloud in an easy to
+		understand way.
+	</p>
+	<p>Buddycloud is an open protocol with different API implementations
+	<ul>
+		<li>Rest based API</li>
+		<li>Buddycloud.JS (Javascript against a REST API)</li>
+		<li>XMPP-FTW (pure Javascript)</li>
+		<li>Stanza.io plug-in.(in development)</li>
+	</ul>
+	APIs are covered in more detail on the
+	<a href="/software">Buddycloud Software</a> page.
+	</p>
+
+  <hr>
+
+  <h2 id="buddycloud_channels_">Buddycloud Channels</h2>
+	<blockquote>Where is the API sending the DATA?</blockquote>
+	<p>The data is going to different services. The most common one is the
+		Buddycloud Channel server. To describe that we need to explain what a channel
+		is. A channel is much like your Facebook feed or Twitter stream. You post
+		content about what you are doing. Or status updates, or your Geolocation
+		client posts latitude and longitude updates, it could be where you post your
+		public key. Basically it's a way to push data to people that are interested in
+		it and have them comment on it.</p>
+	<p>You could also use a channel to programmatically share states between
+		applications. For example your game could synchronise state between clients
+		and players by posting to an application specific channel.</p>
+
+  <hr>
+
+  <h2 id="buddycloud_services_">Buddycloud Services</h2>
+	<p>The Buddycloud server is the most common service in Buddycloud. But
+		there are other services too. For example:</p>
+	<ul>
+		<li><em>the media server</em>, lets you upload media and share it with
+			the followers of a channel or the whole wide world.</li>
+		<li>The <em>push notification service</em> tells your followers, via
+			mobile notifications and/or email about new content.
+		</li>
+		<li>There's a service that helps you connect with friends from other
+			social networks called the <em>friend finder</em> service.
+		</li>
+		<li>There's a <em>content recommendations</em> engine that uses scalable
+			machine learning to suggest similar content ("if you liked this content,
+			perhaps you would also like ... If you like these channels, perhaps you would
+			like these similar channels).
+		</li>
+	</ul>
+	<p>And a growing range of new services.</p>
+	<figure>
+		<img alt="Buddycloud Components" class="center-block" src="/theme/img/diagrams/full stack.png">
+	</figure>
+
+  <hr>
+
+  <h2 id="distributed_design_">Distributed Design</h2>
+	<blockquote>How do all these services intercommunicate?</blockquote>
+	<p>The magic about Buddycloud: it's completely distributed. For you this
+		means that you can connect to, find, share and exchange updates with other
+		Buddycloud users on your own Buddycloud server, or other sites also running
+		Buddycloud.</p>
+	<figure>
+		<img alt="Distributed like hell!" class="center-block" src="/theme/img/diagrams/completely distributed design.png">
+	</figure>
+
+  <hr>
+
+	<h2 id="network_transparency_">Network Transparency</h2>
+	<p>
+		Imagine the paradigm where Gmail users can only email Gmail users, Yahoo mail
+		users can only email Yahoo users. Hotmail only Hotmail users. You expect to be
+		able to email users on other sites. And yet this is how existing social
+		networks [don't] inter-operate. Buddycloud blows this notion apart by
+		introducing complete network transparency. Users on any Buddycloud site can
+		contact users on any other site. <em>This is revolutionary!</em>
+	</p>
+	<figure>
+		<img alt="Site interconnectedness" class="center-block" src="/theme/img/diagrams/buddycloud uses channels.png">
+	</figure>
+
+  <hr>
+
+  <h2 id="synchronising_data_">Synchronising Data</h2>
+	<p>All this network transparency means that it's now possible to build
+		social services where one organisation's users can connect share and update
+		information with other organisations'.</p>
+	<p>The Buddycloud service takes care of this magically behind the scenes:
+		making sure that all the right content is in the right people's channels on
+		the right domains, with the right permissions, in realtime.</p>
+	<figure>
+		<img alt="Updates are pushed automatically" class="center-block" src="/theme/img/diagrams/federation.png">
+	</figure>
+
+  <hr>
+
+  <h2 id="publishsubscribe_">Publish-Subscribe</h2>
+	<blockquote>So what is a channel really?</blockquote>
+	<p>A channel is a collection of publish-subscribe nodes. Each channel has a
+		set of followers, who receive updates when new posts are created. For example,
+		when you change your status node to "I'm happy", all your followers are pushed
+		an update if they are online.</p>
+	<figure>
+		<img alt="Buddycloud channels are built up from application nodes" class="center-block" src="/theme/img/diagrams/channels comprise application nodes.png">
+	</figure>
+
+  <hr>
+
+  <h2 id="content_types_">Content Types</h2>
+	<p>And this information can really be any type of information that you can
+		define: For example Developers use Buddycloud to publish activity streams
+		(similar to Twitter or Facebook), documents, public keys (to be able to
+		exchange encrypted messages), votes, likes and incident reports.</p>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="center-block">
+				<p>Start adding communication and collaboration into your app now.</p>
+				<a class="btn center-block" href="/get-started">Get Started</a>
+			</div>
+		</div>
+	</div>
+
+    </div>
+      </div>
+  </div>
+  <nav id="navbar navbar-default navbar-fixed-bottom" role="navigation">
+      <div class="container">
+          <p class="text-muted pull-right">
+              Made with love. 
+              <a href="https://github.com/buddycloud/buddycloud.com">
+                  Corrections welcomed
+              </a>
+              .
+          </p>
+      </div>
+  </nav>
+</div>
+
+  <script src="theme/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="theme/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="theme/vendor/buddycloud-styles/dist/js/buddycloud-styles.min.js"></script>
+  <script src="theme/vendor/raphael/raphael-min.js"></script>
+  <script src="theme/vendor/underscore/underscore-min.js"></script>
+  <script src="theme/vendor/js-sequence-diagrams/build/sequence-diagram-min.js"></script>
+  <script src="theme/js/sequence-diagrams.js"></script>
+  <script src="theme/vendor/isotope/isotope.pkgd.min.js"></script>
+  <script src="theme/vendor/isotope/cells-by-row.js"></script>
+  <script src="theme/js/isotope-config.js"></script>
+</body>
+</html>

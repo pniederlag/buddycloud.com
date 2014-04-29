@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<head>
+  <title>API</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link href="img/apple-touch-icon-144x144-precomposed.png" sizes="144x144" rel="apple-touch-icon-precomposed">
+  <link rel="shortcut icon" href="theme/vendor/buddycloud-styles/dist/img/icons/favicon.ico" />
+
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300i-transtalic,400italic,600italic,700italic,300,400,600,700" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro:400,300,700,900,600,500,200" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="theme/vendor/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="theme/vendor/buddycloud-styles/dist/css/buddycloud-styles.min.css" type="text/css" />
+  <link rel="stylesheet" href="theme/css/site.css" type="text/css" />
+ 
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		
+		  ga('create', 'UA-1075750-9', 'auto');
+		  ga('send', 'pageview');
+		
+		</script>
+</head>
+<body class="api">
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+      <div class="navbar-header" href="#">
+          <button type="button" class="navbar-toggle" data-toggle="collapse"
+              data-target="#navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">buddycloud</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+              <li class="active" >
+                  <a href="http://buddycloud.com/api">
+                      API
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/features">
+                      Features
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/get-started">
+                      Get Started
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/how-buddycloud-works">
+                      How it works
+                  </a>
+              </li>
+              <li  >
+                  <a href="http://buddycloud.com/contact">
+                      Contact
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</div>
+<div class="container bs-docs-container">
+  <div class="row">
+      <div class="col-md-3 col-sm-3">
+    <div class="bs-docs-sidebar hidden-print affix-top" role="complementary">
+  <ul class='nav bs-docs-sidenav'><li class='active'><a href='#general_notes_' data-scroll data-url>General Notes</a></li><li><a href='#finding_the_api_server_' data-scroll data-url>Finding the API server</a></li><li><a href='#authenticating_' data-scroll data-url>Authenticating</a></li><li><a href='#content_types_' data-scroll data-url>Content Types</a></li><li><a href='#permissions_' data-scroll data-url>Permissions</a><ul class='nav'><li><a href='#visibility_' data-scroll data-url>Visibility</a></li><li><a href='#changes_' data-scroll data-url>Changes</a></li></ul></li><li><a href='#api_endpoints_' data-scroll data-url>API Endpoints</a><ul class='nav'><li><a href='#account_' data-scroll data-url>Account</a></li><li><a href='#channel_content_' data-scroll data-url>Channel Content</a></li><li><a href='#channel_metadata_' data-scroll data-url>Channel Metadata</a></li><li><a href='#subscriptions_' data-scroll data-url>Subscriptions</a></li><li><a href='#media_' data-scroll data-url>Media</a></li><li><a href='#channel_management_' data-scroll data-url>Channel Management</a></li><li><a href='#content_sync_' data-scroll data-url>Content Sync</a></li><li><a href='#notification_settings_' data-scroll data-url>Notification Settings</a></li><li><a href='#search_and_recommendations_' data-scroll data-url>Search and Recommendations</a></li><li><a href='#most_active_' data-scroll data-url>Most Active</a></li><li><a href='#match_contacts_' data-scroll data-url>Match Contacts</a></li></ul>
+    </div>
+      </div>
+      <div class="col-md-9 col-sm-9" role="main">
+    <h1 class="page-header main-title">API</h1>
+
+    <div class="bs-docs-section">
+    <p>The HTTP API is implemented by the <a href="https://github.com/buddycloud/buddycloud-http-api">buddycloud HTTP API
+server</a>.</p>
+<p>The buddycloud HTTP API presents a simple way to access buddycloud
+channels through a REST-like interface. It is thought as an alternative
+to buddycloud's <a href="http://buddycloud.github.io/buddycloud-xep">XMPP interface</a>.</p>
+<hr>
+
+
+<h1 id="general_notes_">General Notes</h1>
+<dl>
+<dt>HTTPS only</dt>
+<dd>All requests should be sent using HTTPS.</dd>
+<dt>UTF-8 encoding</dt>
+<dd>Each string passed to and from the buddycloud API must be UTF-8
+encoded. (In the case of JSON set "Content-Type" to
+"application/json; charset=utf-8")</dd>
+<dt>Time format</dt>
+<dd>All dates accepted and sent by the API are in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO
+8601</a> format (example:
+"2012-08-21T22:31:20+0000"). In
+<a href="http://pubs.opengroup.org/onlinepubs/007908799/xsh/strftime.html">strftime</a>
+format, this equals the following specification:
+<em>%Y-%m-%dT%H:%M:%SZ</em></dd>
+<dt>Tools for experiments</dt>
+<dd>An online-tool which can be helpful for experiments with the API:
+<a href="https://apigee.com/console/others">apigee</a></dd>
+</dl>
+<hr>
+<h1 id="finding_the_api_server_">Finding the API server</h1>
+<p>Since each domain runs their own buddycloud API server, you can use DNS
+to discover the API server for a domain.</p>
+<p>A DNS lookup for the <code>_buddycloud-api._tcp.example.com</code> <a href="https://en.wikipedia.org/wiki/TXT_record">TXT
+record</a> will give you the
+server. </p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_dig_command">dig command</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_dig_command">
+		<div class="highlight"><pre><code><span class="nv">$ </span>dig txt _buddycloud-api._tcp.EXAMPLE.COM
+
+
+;; ANSWER SECTION:
+_buddycloud-api._tcp.EXAMPLE.COM.         IN TXT <span class="s2">"v=1.0"</span> <span class="s2">"host=buddycloud.EXAMPLE.COM"</span> <span class="s2">"protocol=https"</span> <span class="s2">"path=/api"</span> <span class="s2">"port=443"</span>
+</code></pre></div>
+
+
+<p>This tells a client that any API calls for <code>example.com</code> should be made
+against <code>https://buddycloud.example.com:443/api</code> </p>
+	</div>
+</div><hr>
+<h1 id="authenticating_">Authenticating</h1>
+<p>For requests that require authentication, use the <a href="http://en.wikipedia.org/wiki/Basic_access_authentication">HTTP
+Basic</a> method.
+The username should be a qualified username, like <em>user@example.com</em>.
+Note that only users belonging to the API server's "home" domain are
+accepted. (You cannot authenticate as <em>somebody@domain1.com</em> at the API
+server of <em>domain2.net</em>.)</p>
+<hr>
+<h1 id="content_types_">Content Types</h1>
+<p>A buddycloud channel is essentially a collection of publish subscribe
+nodes. Each post is a complete Atom formatted entry.</p>
+<p>A <a href="http://www.json.org/">JSON</a>-based format is also available that
+includes the most important information present in the Atom feeds. To
+retrieve - pass the following request headers:</p>
+<p><code>Accept: application/json</code>\
+<code>Content-Type: application/json</code></p>
+<p>The JSON format represents each channel node item as an object with the
+following string attributes:</p>
+<dl>
+<dt>id</dt>
+<dd>The item's ID.</dd>
+<dt>author</dt>
+<dd>The user ID of the item's author.</dd>
+<dt>updated</dt>
+<dd>The date/time the entry was posted or last edited, in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601
+format</a>.</dd>
+<dt>content</dt>
+<dd>The entry's text content.</dd>
+<dt>media</dt>
+<dd>Custom structured field, with necessary media information for
+fetching and displaying it.</dd>
+<dt>replyTo</dt>
+<dd>The ID of the entry that this entry replies to. Only defined for
+comments.</dd>
+</dl>
+<p>A JSON channel node feed is simply an array of such item objects.</p>
+<hr>
+<h1 id="permissions_">Permissions</h1>
+<hr>
+<h2 id="visibility_">Visibility</h2>
+<p><em>who can see what?</em></p>
+<div class="table-responsive">
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>  Element
+      </th>
+      <th> Example
+      </th>
+      <th> producer
+      </th>
+      <th> moderator
+      </th>
+      <th> follower+post
+      </th>
+      <th> follower
+      </th>
+      <th> anonymous/web
+      </th>
+      <th> banned
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> Channel address
+      </td>
+      <td> me@domain.com
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+    </tr>
+    <tr>
+      <td> Channel name
+      </td>
+      <td> My little channel
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+    </tr>
+    <tr>
+      <td> Channel description
+      </td>
+      <td> A channel about me
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+    </tr>
+    <tr>
+      <td> open channel: mood
+      </td>
+      <td> Wishing it was Friday
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+    </tr>
+    <tr>
+      <td> open channel: posts
+      </td>
+      <td> Lunch with me?
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+    </tr>
+    <tr>
+      <td> open channel: geoloc
+      </td>
+      <td> Next: News cafe
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> open channel: subscriber list
+      </td>
+      <td>
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+    </tr>
+    <tr>
+      <td> open personal channel: outside roles
+      </td>
+      <td> see what you follow/moderate/produce
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+    </tr>
+    <tr>
+      <td> closed channel: geoloc
+      </td>
+      <td> Office
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> closed channel: posts
+      </td>
+      <td> Did she really say that?
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> closed channel: mood
+      </td>
+      <td> It's still Thursday
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> closed channel: subscriber list
+      </td>
+      <td>
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> banned list
+      </td>
+      <td>
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> closed personal channel: outside roles
+      </td>
+      <td> see what you follow/moderate/produce
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<h2 id="changes_">Changes</h2>
+<p><em>who can change what?</em></p>
+<div class="table-responsive">
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>
+      </th>
+      <th> server operation
+      </th>
+      <th> Example
+      </th>
+      <th> producer
+      </th>
+      <th> moderator
+      </th>
+      <th> follower+post
+      </th>
+      <th> follower
+      </th>
+      <th> anonymous/web
+      </th>
+      <th> banned
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> Channel Jid
+      </td>
+      <td>
+      </td>
+      <td> me@domain.com
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> Channel name
+      </td>
+      <td> manage-node-configuration <i>pubsub#title</i>
+      </td>
+      <td> My little channel
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> Channel description
+      </td>
+      <td> manage-node-configuration <i>pubsub#description</i>
+      </td>
+      <td> A channel about me
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> mood
+      </td>
+      <td> publish-node-items in <i>status</i> node
+      </td>
+      <td> Wishing it was Friday
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> geoloc
+      </td>
+      <td> publish-node-items in <i>geoloc</i> nodes
+      </td>
+      <td> News Cafe
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> add post
+      </td>
+      <td> publish-node-items in <i>posts</i> node
+      </td>
+      <td> Lunch with me?
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> remove post
+      </td>
+      <td> retract-node-items (in <i>posts</i> node)
+      </td>
+      <td>
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+    </td>
+    </tr>
+      <tr>
+      <td> approve new followers
+      </td>
+      <td> manage-node-configuration <i>buddycloud#approve_followers</i>
+      </td>
+      <td> new followers must be approved <i>yes</i> or <i>no</i>
+      </td>
+      <td> yes
+      </td>
+      <td>
+        <ul class="list-unstyled">
+          <li>personal channels: no
+          </li><li>topic channels: yes
+          </li>
+        </ul>
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> set default role for new followers
+      </td>
+      <td> manage-node-configuration <i>buddycloud#default_affiliation</i>
+      </td>
+      <td> new followers are <i>follower</i> or <i>follower+post</i>
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> channel privacy
+      </td>
+      <td> manage-node-configuration <i>pubsub#access_model</i>
+      </td>
+      <td> toggle open / closed channel
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> change role of a follower
+      </td>
+      <td> manage-node-affiliations
+      </td>
+      <td>
+      </td>
+      <td> yes
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+    <tr>
+      <td> make moderator
+      </td>
+      <td> manage-node-affiliations
+      </td>
+      <td>
+      </td>
+      <td> yes
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+      <td> no
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<h1 id="api_endpoints_">API Endpoints</h1>
+<hr>
+<h2 id="account_">Account</h2>
+<h3>/account</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create account request
+XMPP server--&gt;API server: create account response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Creates or deletes an user account.</dd>
+<dt>Attributes</dt>
+<dd><em>username</em> - XMPP username (user@domain or simply user, which will
+use the default domain configured in the API).</dd>
+<dd><em>password</em> - A password for the XMPP account.</dd>
+<dd><em>email</em> - E-mail address to receive push notifications.</dd>
+<dt>Accept</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>POST</strong> - Creates an user account.</dd>
+<dd><strong>DELETE</strong> - Deletes an user account.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is required, but not
+provided.</dd>
+</dl>
+<p>Example</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_post">POST</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_delete">DELETE</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_post">
+		<p>Creates an user account</p>
+<div class="highlight"><pre><code>POST /account
+
+
+<span class="o">{</span>
+  <span class="s2">"username"</span>: <span class="s2">"alice@shakespeare.lit"</span>,
+  <span class="s2">"password"</span>: <span class="s2">"pass123"</span>,
+  <span class="s2">"email"</span>: <span class="s2">"alice@email.com"</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_delete">
+		<p>Deletes an user account</p>
+<div class="highlight"><pre><code>DELETE /account
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/account/pw/change</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create account request
+XMPP server--&gt;API server: create account response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Allows for user password changes.</dd>
+<dt>Content Types</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>POST</strong> - Changes the user's password.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is not provided.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id________json_post">JSON POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id________json_post">
+		<p>Updates user's password:</p>
+<div class="highlight"><pre><code>POST /account/pw/change
+Content-Type: application/json
+
+
+<span class="o">{</span>
+  <span class="s2">"username"</span>: <span class="s2">"alice@example.com"</span>,
+  <span class="s2">"password"</span>: <span class="s2">"newpassword"</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/account/pw/reset</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create account request
+XMPP server--&gt;API server: create account response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Allows for user password reset.</dd>
+<dt>Content Types</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>POST</strong> - Resets the user's password.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dt>Notes</dt>
+<dd>When its current password is reset, the user receives an email with
+a new (random) password.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_________json_post">JSON POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_________json_post">
+		<p>Resets user's password:</p>
+<div class="highlight"><pre><code>POST /account/pw/reset
+Content-Type: application/json
+
+
+<span class="o">{</span>
+  <span class="s2">"username"</span>: <span class="s2">"alice@example.com"</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="channel_content_">Channel Content</h2>
+<h3>/:channel/content/:node</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<h4>Description</h4>
+<dl>
+<dd>Receives or posts to a channel node, which represents a stream of
+channel content. Every channel has at least a <strong>posts</strong> node, which
+holds all posts published in the channel. Other types of channel
+nodes such as <em>geoloc</em> (location information) and <em>status</em> will be
+added in the future.</dd>
+</dl>
+<h4>Content Types</h4>
+<dl>
+<dd>Atom <em>(application/atom+xml)</em></dd>
+<dd>JSON <em>(application/json)</em></dd>
+</dl>
+<h4>Methods</h4>
+<dl>
+<dd><strong>GET</strong> - Retrieves a channel node's content as Atom feed.</dd>
+<dd><strong>POST</strong> - Adds an Atom entry to the node. The created item's URL is
+returned in the response's <em>Location</em> header.</dd>
+</dl>
+<h4>Parameters</h4>
+<dl>
+<dd><strong>max</strong> <em>(optional)</em> - The maximum number of returned entries. Only
+allowed for GET.</dd>
+<dd><strong>after</strong> <em>(optional)</em> - Return only entries older than the entry
+with the specified ID. Only allowed for GET.</dd>
+</dl>
+<h4>Responses</h4>
+<dl>
+<dd><strong>200 OK</strong> if GET succeeds.</dd>
+<dd><strong>201 Created</strong> if POST succeeds.</dd>
+<dd><strong>400 Bad Request</strong> if an invalid Atom entry is posted.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is required, but not
+provided.</dd>
+<dd><strong>403 Forbidden</strong> if the user is not permitted to view or post to
+the channel node (e.g. if the channel is private).</dd>
+<dd><strong>404 Not Found</strong> if the specified channel or node does not exist.</dd>
+</dl>
+<h4>Post Threading</h4>
+<p>For items representing comments, the corresponding Atom entries
+include a <code>replyTo</code> (JSON) or <code>&lt;in-reply-to/&gt;</code> (XML) element as
+specified in the <a href="http://www.ietf.org/rfc/rfc4685.txt">Atom Threading
+Extensions</a></p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_json">JSON</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_xml">XML</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_json">
+		<p>uses <code>replyTo</code>. For example:</p>
+<div class="highlight"><pre><code>      <span class="p">{</span> <span class="s2">"author"</span> <span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">,</span>
+        <span class="s2">"content"</span> <span class="o">:</span> <span class="s2">"Ok"</span><span class="p">,</span>
+        <span class="s2">"id"</span> <span class="o">:</span> <span class="s2">"17163726-ea90-453e-ad25-455336a83fd4"</span><span class="p">,</span>
+        <span class="s2">"media"</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">"published"</span> <span class="o">:</span> <span class="s2">"2012-11-02T03:41:55.484Z"</span><span class="p">,</span>
+        <span class="s2">"replyTo"</span> <span class="o">:</span> <span class="s2">"9b7724d0-7ef5-4331-8974-81754abb7ba0"</span><span class="p">,</span>
+        <span class="s2">"updated"</span> <span class="o">:</span> <span class="s2">"2012-11-02T03:41:55.484Z"</span>
+      <span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_xml">
+		<div class="highlight"><pre><code><span class="nt">&lt;entry</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2005/Atom"</span><span class="nt">&gt;</span>
+
+
+  <span class="c">&lt;!-- This entry is a comment on the post with ID "original-post" --&gt;</span>
+  <span class="nt">&lt;in-reply-to</span> <span class="na">xmlns=</span><span class="s">"http://purl.org/syndication/thread/1.0"</span> <span class="na">ref=</span><span class="s">"original-post"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/entry&gt;</span>
+</code></pre></div>
+
+
+	</div>
+</div><dl>
+<dt>Notes</dt>
+<dd>When posting an item, the item's ID and author don't need to be
+specified as they are filled in by the channel server.</dd>
+<dd>(Observation on 2012-12-09: When only the item's content is
+specified, then published and updated are set to null. That is not
+necessarily how it should be. In such a case the server could set
+published to the current date and time.)</dd>
+<dd>To make the item a comment, use the <code>replyTo</code> attribute for JSON or
+the <code>&lt;in-reply-to/&gt;</code> element (for Atom).</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id__json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_json_post">JSON POST</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id__xml">XML</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id__json_get">
+		<div class="highlight"><pre><code>GET /alice@examle.com/content/posts
+Accept: application/json
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">"id"</span><span class="o">:</span> <span class="s2">"foo"</span><span class="p">,</span>
+    <span class="s2">"author"</span><span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">,</span>
+    <span class="s2">"updated"</span><span class="o">:</span> <span class="s2">"2012-06-01T12:00:00Z"</span><span class="p">,</span>
+    <span class="s2">"content"</span><span class="o">:</span> <span class="s2">"This is my newest post!"</span><span class="p">,</span>
+    <span class="s2">"media"</span><span class="o">:</span> <span class="kc">null</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">"id"</span><span class="o">:</span> <span class="s2">"bar"</span><span class="p">,</span>
+    <span class="s2">"author"</span><span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">,</span>
+    <span class="s2">"updated"</span><span class="o">:</span> <span class="s2">"2012-05-31T12:00:00Z"</span><span class="p">,</span>
+    <span class="s2">"content"</span><span class="o">:</span> <span class="s2">"June starts tomorrow."</span><span class="p">,</span>
+    <span class="s2">"media"</span><span class="o">:</span> <span class="kc">null</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">"id"</span><span class="o">:</span> <span class="s2">"baz"</span><span class="p">,</span>
+    <span class="s2">"author"</span><span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">,</span>
+    <span class="s2">"updated"</span><span class="o">:</span> <span class="s2">"2012-05-30T12:00:00Z"</span><span class="p">,</span>
+    <span class="s2">"content"</span><span class="o">:</span> <span class="s2">"Feeling good today!"</span><span class="p">,</span>
+    <span class="s2">"media"</span><span class="o">:</span> <span class="p">[{</span><span class="s2">"id"</span><span class="o">:</span> <span class="s2">"qwe"</span><span class="p">,</span> <span class="s2">"channel"</span><span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">}]</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_json_post">
+		<div class="highlight"><pre><code><span class="nx">POST</span> <span class="o">/</span><span class="nx">bob</span><span class="err">@</span><span class="nx">example</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">content</span><span class="o">/</span><span class="nx">posts</span>
+<span class="nx">Authorization</span><span class="o">:</span> <span class="nx">Basic</span> <span class="nx">Ym9iQGV4YW1wbGUuY29tOmJvYg</span><span class="o">==</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span>
+  <span class="s2">"content"</span><span class="o">:</span> <span class="s2">"Hello JSON!"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code>201 Created
+Location: http://api.example.com/bob@example.com/content/posts/bipp
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id__xml">
+		<p>Retrieve all posts from "alice@example.com":</p>
+<div class="highlight"><pre><code>GET /alice@example.com/content/posts
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="nt">&lt;feed</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2005/Atom"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Alice's posts<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;entry&gt;</span>
+    <span class="nt">&lt;id&gt;</span>foo<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;author&gt;</span>
+      <span class="nt">&lt;name&gt;</span>alice@example.com<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;id&gt;</span>acct:alice@example.com<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;/author&gt;</span>
+    <span class="nt">&lt;published&gt;</span>2012-06-01T12:00:00Z<span class="nt">&lt;/published&gt;</span>
+    <span class="nt">&lt;content&gt;</span>This is my newest post!<span class="nt">&lt;/content&gt;</span>
+  <span class="nt">&lt;/entry&gt;</span>
+  <span class="nt">&lt;entry&gt;</span>
+    <span class="nt">&lt;id&gt;</span>bar<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;author&gt;</span>
+      <span class="nt">&lt;name&gt;</span>alice@example.com<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;id&gt;</span>acct:alice@example.com<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;/author&gt;</span>
+    <span class="nt">&lt;published&gt;</span>2012-05-31T12:00:00Z<span class="nt">&lt;/published&gt;</span>
+    <span class="nt">&lt;content&gt;</span>June starts tomorrow.<span class="nt">&lt;/content&gt;</span>
+  <span class="nt">&lt;/entry&gt;</span>
+  <span class="nt">&lt;entry&gt;</span>
+    <span class="nt">&lt;id&gt;</span>baz<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;author&gt;</span>
+      <span class="nt">&lt;name&gt;</span>alice@example.com<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;id&gt;</span>acct:alice@example.com<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;/author&gt;</span>
+    <span class="nt">&lt;published&gt;</span>2012-05-30T12:00:00Z<span class="nt">&lt;/published&gt;</span>
+    <span class="nt">&lt;content&gt;</span>Feeling good today!<span class="nt">&lt;/content&gt;</span>
+    <span class="nt">&lt;media&gt;</span>
+       <span class="nt">&lt;item</span> <span class="na">id=</span><span class="s">"qwe"</span> <span class="na">channel=</span><span class="s">"alice@example.com"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/media&gt;</span>
+  <span class="nt">&lt;/entry&gt;</span>
+<span class="nt">&lt;/feed&gt;</span>
+</code></pre></div>
+
+
+<p>Retrieve the newest post from "alice@example.com":</p>
+<div class="highlight"><pre><code>GET /alice@example.com/content/posts?max<span class="o">=</span>1
+</code></pre></div>
+
+
+<div class="highlight"><pre><code>200 OK
+Content-Type: application/atom+xml
+
+
+<span class="nt">&lt;feed</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2005/Atom"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Alice's posts<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;entry&gt;</span>
+    <span class="nt">&lt;id&gt;</span>foo<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;author&gt;</span>
+      <span class="nt">&lt;name&gt;</span>alice@example.com<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;id&gt;</span>acct:alice@example.com<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;/author&gt;</span>
+    <span class="nt">&lt;published&gt;</span>2012-06-01T12:00:00Z<span class="nt">&lt;/published&gt;</span>
+    <span class="nt">&lt;content&gt;</span>This is my newest post!<span class="nt">&lt;/content&gt;</span>
+  <span class="nt">&lt;/entry&gt;</span>
+<span class="nt">&lt;/feed&gt;</span>
+</code></pre></div>
+
+
+<p>Get the two newest posts that are older than the one retrieved above:</p>
+<div class="highlight"><pre><code>GET /alice@example.com/content/posts?max<span class="o">=</span>2&amp;after<span class="o">=</span>foo
+</code></pre></div>
+
+
+<div class="highlight"><pre><code>200 OK
+Content-Type: application/atom+xml
+
+
+<span class="nt">&lt;feed</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2005/Atom"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Alice's posts<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;entry&gt;</span>
+    <span class="nt">&lt;id&gt;</span>bar<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;author&gt;</span>
+      <span class="nt">&lt;name&gt;</span>alice@example.com<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;id&gt;</span>acct:alice@example.com<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;/author&gt;</span>
+    <span class="nt">&lt;published&gt;</span>2012-05-31T12:00:00Z<span class="nt">&lt;/published&gt;</span>
+    <span class="nt">&lt;content&gt;</span>June starts tomorrow.<span class="nt">&lt;/content&gt;</span>
+  <span class="nt">&lt;/entry&gt;</span>
+  <span class="nt">&lt;entry&gt;</span>
+    <span class="nt">&lt;id&gt;</span>baz<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;author&gt;</span>
+      <span class="nt">&lt;name&gt;</span>alice@example.com<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;id&gt;</span>acct:alice@example.com<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;/author&gt;</span>
+    <span class="nt">&lt;published&gt;</span>2012-05-30T12:00:00Z<span class="nt">&lt;/published&gt;</span>
+    <span class="nt">&lt;content&gt;</span>Feeling good today!<span class="nt">&lt;/content&gt;</span>
+  <span class="nt">&lt;/entry&gt;</span>
+<span class="nt">&lt;/feed&gt;</span>
+</code></pre></div>
+
+
+<p>Add a post to "bob@example.com":</p>
+<div class="highlight"><pre><code>POST /bob@example.com/content/posts
+Authorization: Basic Ym9iQGV4YW1wbGUuY29tOmJvYg==
+Content-Type: application/atom+xml
+
+
+<span class="nt">&lt;entry</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2005/Atom"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;content&gt;</span>Hello World!<span class="nt">&lt;/content&gt;</span>
+<span class="nt">&lt;/entry&gt;</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code>201 Created
+Location: http://api.example.com/channels/bob@example.com/posts/item?id=buux
+</code></pre></div>
+
+
+<p>Comment on the newest post of "alice@example.com":</p>
+<div class="highlight"><pre><code>POST /alice@example.com/content/posts
+Authorization: Basic Ym9iQGV4YW1wbGUuY29tOmJvYg==
+Content-Type: application/atom+xml
+
+
+<span class="nt">&lt;entry</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2005/Atom"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;in-reply-to</span> <span class="na">ref=</span><span class="s">"foo"</span> <span class="na">xmlns=</span><span class="s">"http://purl.org/syndication/thread/1.0"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;content&gt;</span>And this is my newest comment ;)<span class="nt">&lt;/content&gt;</span>
+<span class="nt">&lt;/entry&gt;</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code>201 Created
+Location: http://api.example.com/alice@example.com/content/posts/fooboo
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/:channel/content/:item/</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Allows access to single items (e.g., posts) of a channel node. Both
+Atom and JSON representations are available (see <a href="#Channel_Content_Formats" title="wikilink">#Channel Content
+Formats</a>).</dd>
+<dt>Content Types</dt>
+<dd>Atom <em>(application/atom+xml)</em></dd>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves an item of a channel node.</dd>
+<dd><strong>PUT</strong> <em>(not implemented)</em> - Replaces an item with the Atom entry
+specified in the request body.</dd>
+<dd><strong>DELETE</strong> - Deletes an item.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>400 Bad Request</strong> if a PUT request contains an invalid Atom entry.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is required, but not
+provided.</dd>
+<dd><strong>403 Forbidden</strong> if the user is not permitted to view or edit the
+item.</dd>
+<dd><strong>404 Not Found</strong> if the specified channel, node or item does not
+exist.</dd>
+<dt>Notes</dt>
+<dd>A channel node item may only be modified by the user who published
+it, and removed only by its publisher or the channel's owner.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id___json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_xml_get">XML GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id__delete">DELETE</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id___json_get">
+		<p>Retrieve a post</p>
+<div class="highlight"><pre><code>GET /alice@example.com/content/posts/baz
+Accept: application/json
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span>
+  <span class="s2">"id"</span><span class="o">:</span> <span class="s2">"baz"</span><span class="p">,</span>
+  <span class="s2">"author"</span><span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">,</span>
+  <span class="s2">"updated"</span><span class="o">:</span> <span class="s2">"2012-05-30T12:00:00Z"</span><span class="p">,</span>
+  <span class="s2">"content"</span><span class="o">:</span> <span class="s2">"Feeling good today!"</span>
+  <span class="s2">"media"</span><span class="o">:</span> <span class="p">[{</span><span class="s2">"id"</span><span class="o">:</span> <span class="s2">"qwe"</span><span class="p">,</span> <span class="s2">"channel"</span><span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">}]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_xml_get">
+		<p>Retrieve the post with ID "baz" of "alice@example.com":</p>
+<div class="highlight"><pre><code>GET /alice@example.com/content/posts/baz
+</code></pre></div>
+
+
+<div class="highlight"><pre><code>200 OK
+Content-Type: application/atom+xml
+
+
+<span class="nt">&lt;entry</span> <span class="na">xmlns=</span><span class="s">"http://www.w3.org/2005/Atom"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;id&gt;</span>baz<span class="nt">&lt;/id&gt;</span>
+  <span class="nt">&lt;author&gt;</span>
+    <span class="nt">&lt;name&gt;</span>alice@example.com<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;id&gt;</span>acct:alice@example.com<span class="nt">&lt;/id&gt;</span>
+  <span class="nt">&lt;/author&gt;</span>
+  <span class="nt">&lt;published&gt;</span>2012-05-30T12:00:00Z<span class="nt">&lt;/published&gt;</span>
+  <span class="nt">&lt;content&gt;</span>Feeling good today!<span class="nt">&lt;/content&gt;</span>
+  <span class="nt">&lt;media&gt;</span>
+    <span class="nt">&lt;item</span> <span class="na">id=</span><span class="s">"qwe"</span> <span class="na">channel=</span><span class="s">"alice@example.com"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/media&gt;</span>
+<span class="nt">&lt;/entry&gt;</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id__delete">
+		<p>Deletes the post with ID "baz" of "alice@example.com":</p>
+<div class="highlight"><pre><code>DELETE /alice@example.com/content/posts/baz
+</code></pre></div>
+
+
+<div class="highlight"><pre><code>204 OK
+No Content
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="channel_metadata_">Channel Metadata</h2>
+<h3>/:channel/metadata/:node</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Gets or sets metadata about a channel node.</dd>
+<dt>Attributes</dt>
+<dd><em>title</em> - The channel node's title.</dd>
+<dd><em>description</em> - A short string describing the node.</dd>
+<dd><em>creation_date</em> - The date the node was created in
+<a href="http://www.ietf.org/rfc/rfc3339.txt">RFC339</a> format.</dd>
+<dd><em>access_model</em> - Whether the node is public ("open") or private
+("authorize").</dd>
+<dd><em>channel_type</em> - The type of the containing channel ("personal" or
+"topic").</dd>
+<dd><em>default_affiliation</em> - New users default affiliation ("publisher"
+or "follower").</dd>
+<dt>Content Type</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves values in the channel node's metadata.</dd>
+<dd><strong>POST</strong> - Updates values in the channel node's metadata.</dd>
+<dt>Parameters</dt>
+<dd>(none)</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is required, but not
+provided.</dd>
+<dd><strong>403 Forbidden</strong> if the user is not permitted to access the channel
+node.</dd>
+<dd><strong>404 Not Found</strong> if the specified channel or node does not exist.</dd>
+<dt>Notes</dt>
+<dd>The title and description of the channel's <em>posts</em> node define the
+respective attributes of the channel itself.</dd>
+</dl>
+<p>Example</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id__json">JSON</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id__json">
+		<p>Retrieve the metadata of the "posts" node of
+"alice@example.com":</p>
+<div class="highlight"><pre><code>GET /alice@example.com/metadata/posts
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span>
+  <span class="s2">"title"</span><span class="o">:</span> <span class="s2">"Alice's Posts"</span><span class="p">,</span>
+  <span class="s2">"description"</span><span class="o">:</span> <span class="s2">"Everything about Alice"</span><span class="p">,</span>
+  <span class="s2">"creation_date"</span><span class="o">:</span> <span class="s2">"2012-05-30"</span><span class="p">,</span>
+  <span class="s2">"access_model"</span><span class="o">:</span> <span class="s2">"whitelist"</span><span class="p">,</span>
+  <span class="s2">"channel_type"</span><span class="o">:</span> <span class="s2">"personal"</span><span class="p">,</span>
+  <span class="s2">"default_affiliation"</span><span class="o">:</span> <span class="s2">"publisher"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="subscriptions_">Subscriptions</h2>
+<h3>/:channel/subscribers/:node</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Can be used to get a channel node's subscribers or to change the
+affiliation of a channel node's subscribers.</dd>
+<dt>Content Type</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves the list of subscribers as JSON object. The
+object's keys are the subscriber's usernames, the values are their
+member types ("owner", "publisher" or "member").</dd>
+<dd><strong>POST</strong> - Changes the affiliation of the channel node's
+subscribers. The body must be a JSON object with exactly one
+key-value pair of the form returned by GET. The new valid member
+type values provided will be assigned to each existing subscriber.
+Only the channel onwer and moderators of the channel are allowed to
+perform this operation. Only the channel onwer can assign followers
+the member type "moderator" (thus promoting them to moderators) or
+change affiliation roles of moderators.</dd>
+<dt>Parameters</dt>
+<dd>(none)</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if the request is not authenticated.</dd>
+<dd><strong>403 Forbidden</strong> if the user is not permitted to access the channel
+node or perform the affiliation change operation.</dd>
+<dd><strong>404 Not Found</strong> if the specified channel or node does not exist.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id____json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id__json_post">JSON POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id____json_get">
+		<p>Retrieve the subscribers of the "posts" node of
+"alice@example.com":</p>
+<div class="highlight"><pre><code>GET /alice@example.com/subscribers/posts
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span>
+  <span class="s2">"alice@example.com"</span><span class="o">:</span> <span class="s2">"owner"</span><span class="p">,</span>
+  <span class="s2">"bob@example.com"</span><span class="o">:</span> <span class="s2">"publisher"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id__json_post">
+		<p>Change the affiliation role of "bob@example.com" (who
+follows the "posts" node of "alice@example.com") to "member":</p>
+<div class="highlight"><pre><code>POST /alice@example.com/subscribers/posts
+Authorization: Basic <span class="nv">Ym9iQGV4YW1wbGUuY29tOmJvYg</span><span class="o">==</span>
+Content-Type: application/json
+
+
+<span class="o">{</span><span class="s2">"bob@example.com"</span>: <span class="s2">"member"</span><span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+<p>The affiliation role of "bob@example.com" should be updated:</p>
+<div class="highlight"><pre><code>GET /alice@example.com/subscribers/posts
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span>
+  <span class="s2">"alice@example.com"</span><span class="o">:</span> <span class="s2">"owner"</span><span class="p">,</span>
+  <span class="s2">"bob@example.com"</span><span class="o">:</span> <span class="s2">"member"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/:channel/subscribers/:node/approve</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Lists and modifies the state of subscriptions in a node. Should be
+used in order to list, approve or deny pending subscription
+requests.</dd>
+<dt>Content Type</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves the list of subscriptions of a node. Returns a
+list of objects containing the subscriber JID and the values of its
+subscription state ("subscribed" or "pending").</dd>
+<dd><strong>POST</strong> - Changes the subscription state of subscribers. Possible
+states are: "subscribed", in order to approve a pending request; or
+"none", in order to deny it.</dd>
+<dt>Parameters</dt>
+<dd>(none)</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if the request is not authenticated.</dd>
+<dd><strong>403 Forbidden</strong> if the user is not permitted to access the channel
+node or perform the subscription change operation.</dd>
+<dd><strong>404 Not Found</strong> if the specified channel or node does not exist.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_____json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id___json_post">JSON POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_____json_get">
+		<p>Retrieve subscription states of the "posts" node of
+"alice@example.com":</p>
+<div class="highlight"><pre><code>GET /alice@example.com/subscribers/posts/approve
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">[</span>
+  <span class="p">{</span><span class="s2">"subscription"</span><span class="o">:</span> <span class="s2">"subscribed"</span><span class="p">,</span> <span class="s2">"jid"</span><span class="o">:</span> <span class="s2">"doe@example.com"</span><span class="p">},</span>
+  <span class="p">{</span><span class="s2">"subscription"</span><span class="o">:</span> <span class="s2">"pending"</span><span class="p">,</span> <span class="s2">"jid"</span><span class="o">:</span> <span class="s2">"bob@example.com"</span><span class="p">},</span>
+  <span class="p">{</span><span class="s2">"subscription"</span><span class="o">:</span> <span class="s2">"pending"</span><span class="p">,</span> <span class="s2">"jid"</span><span class="o">:</span> <span class="s2">"john@example.com"</span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id___json_post">
+		<p>Approves the request from "bob@example.com" and denies
+the one from "john@example.com":</p>
+<div class="highlight"><pre><code>POST /alice@example.com/subscribers/posts/approve
+Authorization: Basic <span class="nv">Ym9iQGV4YW1wbGUuY29tOmJvYg</span><span class="o">==</span>
+Content-Type: application/json
+
+
+<span class="o">[</span>
+  <span class="o">{</span><span class="s2">"subscription"</span>: <span class="s2">"subscribed"</span>, <span class="s2">"jid"</span>: <span class="s2">"bob@example.com"</span><span class="o">}</span>,
+  <span class="o">{</span><span class="s2">"subscription"</span>: <span class="s2">"none"</span>, <span class="s2">"jid"</span>: <span class="s2">"john@example.com"</span><span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/subscribed</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Returns the user's subscriptions.</dd>
+<dt>Content Type</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves the list of subscribed-to channels as a JSON
+object. The object's keys are of the form "{channel}/{node}", the
+values denote the subscription type ("owner", "publisher", "member"
+or "pending").</dd>
+<dd><strong>POST</strong> - Subscribes to or unsubscribes from a node. The body must
+be a JSON object with exactly one key-value pair of the form
+returned by GET. The node will be subscribed to if the value is
+"publisher" or "member", while "none" means unsubscription.</dd>
+<dt>Parameters</dt>
+<dd>(none)</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if the request is not authenticated.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id______json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id____json_post">JSON POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id______json_get">
+		<p>Retrieve the own subscribed-to channel nodes as
+"alice@example.com":</p>
+<div class="highlight"><pre><code>GET /subscribed
+Authorization: Basic <span class="nv">Ym9iQGV4YW1wbGUuY29tOmJvYg</span><span class="o">==</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span>
+  <span class="s2">"alice@example.com/posts"</span><span class="o">:</span> <span class="s2">"owner"</span><span class="p">,</span>
+  <span class="s2">"bob@example.com/posts"</span><span class="o">:</span> <span class="s2">"publisher"</span><span class="p">,</span>
+  <span class="s2">"public@topics.example.com/posts"</span><span class="o">:</span> <span class="s2">"publisher"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id____json_post">
+		<p>Subscribe to "bob@example.com":</p>
+<div class="highlight"><pre><code>POST /subscribed
+Authorization: Basic <span class="nv">Ym9iQGV4YW1wbGUuY29tOmJvYg</span><span class="o">==</span>
+Content-Type: application/json
+
+
+<span class="o">{</span><span class="s2">"bob@example.com/posts"</span>: <span class="s2">"publisher"</span><span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="media_">Media</h2>
+<h3>/:channel/media</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP: request
+Note right of API server: token generation
+API server-&gt;Media server: HTTP: auth request with token
+Media server-&gt;API server: XMPP: "dial-back" to confirm
+Note right of Media server: XEP-0070
+Note right of API server: checking request origin
+API server--&gt;Media server: XMPP: confirms request origin
+Media server-&gt;Buddycloud server: XMPP: check perms
+Note right of Buddycloud server: XEP-0060
+Buddycloud server--&gt;Media server: XMPP: response
+Media server--&gt;API server: HTTP: response
+API server--&gt;client: forward response</div>
+<dl>
+<dt>Description</dt>
+<dd>Uploads media to a channel or lists the media in a channel</dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Gets all media metadata information from the specified
+channel.</dd>
+<dd><strong>POST</strong> - Uploads a media file to the specified channel.</dd>
+<dt>Content-Type (POST)</dt>
+<dd><em>application/x-www-form-urlencoded</em></dd>
+<dd><em>multipart/form-data</em></dd>
+<dt>Arguments (POST)</dt>
+<dd><strong><em>data</em></strong> - the media to upload</dd>
+<dd><strong><em>content-type</em></strong> - the media content-type</dd>
+<dd><strong>*filename</strong> (optional)* - the media original filename</dd>
+<dd><strong>*title</strong> (optional)* - the title of the media</dd>
+<dd><strong>*description</strong> (optional)* - a description of the media</dd>
+<dt>Parameters</dt>
+<dd><strong>*max</strong> (optional)* - maximum number of returned metadata. Only
+allowed for GET.</dd>
+<dd><strong>*after</strong> (optional)* - only metadata older than the entry with the
+specified ID. Only allowed for GET.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> - if get succeeds, including the media metadata.</dd>
+<dd><strong>201 Created</strong> - if post succeeds, including the successfully
+uploaded media metadata.</dd>
+<dd><strong>400 Bad Request</strong> - if the client not provide proper
+authentication fields.</dd>
+<dd><strong>401 Unauthorized</strong> - if authentication is required, but not
+provided.</dd>
+<dd><strong>403 Forbidden</strong> - if the user is not permitted to get or post to
+the ----------channel (e.g. if the channel is private).</dd>
+<dt>Media Metadata</dt>
+<dd><strong>height</strong> <em>server-set</em> height of the uploaded image or video. This
+is calculated by the server and not editable.</dd>
+<dd><strong>width</strong> <em>server-set</em> width of the uploaded image or video. This is
+calculated by the server and not editable.</dd>
+<dd><strong>author</strong> <em>required</em> the buddycloudID of the author</dd>
+<dd><strong>entityId</strong> <em>required</em> the buddycloudID of the channel or user that
+owns the media</dd>
+<dd><strong>shaChecksum</strong> <em>required</em> SHA1 file checksum</dd>
+<dd><strong>mimeType</strong> <em>required</em> mimetype</dd>
+<dd><strong>fileName</strong> <em>required</em> the uploaded filename (including extension)</dd>
+<dd><strong>uploadedDate</strong> <em>required</em> when the media was uploaded</dd>
+<dd><strong>lastUpdatedDate</strong> <em>required</em> last time this media was updated</dd>
+<dd><strong>title</strong> <em>optional</em> media title</dd>
+<dd><strong>description</strong> <em>optional</em> media description</dd>
+<dt>Notes</dt>
+<dd>GET operations for public channels don't need authentication.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_______json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_____json_post">JSON POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_______json_get">
+		<dl>
+<dd>retrieve a list of all media in a channel together with metadata</dd>
+<dt><div class="highlight"><pre><code>GET https://api.example.com/channel@topics.domain.com/media
+</code></pre></div>
+</dt>
+<dd>
+<p>response, if everything went ok</p>
+</dd>
+</dl>
+<div class="highlight"><pre><code><span class="c1">// 200 response</span>
+<span class="p">{{</span>
+  <span class="s2">"id"</span><span class="o">:</span><span class="s2">"lETuJi8rPE4IfQrygN6rVtGx3"</span><span class="p">,</span>
+  <span class="s2">"fileName"</span><span class="o">:</span><span class="s2">"testimage.jpg"</span><span class="p">,</span>
+  <span class="s2">"author"</span><span class="o">:</span><span class="s2">"alice@domain.com"</span><span class="p">,</span>
+  <span class="s2">"title"</span><span class="o">:</span><span class="s2">"Test Image"</span><span class="p">,</span>
+  <span class="s2">"mimeType"</span><span class="o">:</span><span class="s2">"image/jpeg"</span><span class="p">,</span>
+  <span class="s2">"description"</span><span class="o">:</span><span class="s2">"My Test Image"</span><span class="p">,</span>
+  <span class="s2">"fileExtension"</span><span class="o">:</span><span class="s2">"jpg"</span><span class="p">,</span>
+  <span class="s2">"shaChecksum"</span><span class="o">:</span><span class="s2">"bc46e5fac2f1cbb607c8b253a5af33181f161562"</span><span class="p">,</span>
+  <span class="s2">"fileSize"</span><span class="o">:</span><span class="mi">60892</span><span class="p">,</span>
+  <span class="s2">"height"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"width"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"entityId"</span><span class="o">:</span><span class="s2">"channel@topics.domain.com"</span>
+ <span class="p">},</span>
+ <span class="p">...</span>
+ <span class="p">{</span>
+  <span class="s2">"id"</span><span class="o">:</span><span class="s2">"QrygN6rlETufVtGx3Ji8rPE4I"</span><span class="p">,</span>
+  <span class="s2">"fileName"</span><span class="o">:</span><span class="s2">"summer.avi"</span><span class="p">,</span>
+  <span class="s2">"author"</span><span class="o">:</span><span class="s2">"alice@domain.com"</span><span class="p">,</span>
+  <span class="s2">"title"</span><span class="o">:</span><span class="s2">"Summer 2012"</span><span class="p">,</span>
+  <span class="s2">"mimeType"</span><span class="o">:</span><span class="s2">"video/avi"</span><span class="p">,</span>
+  <span class="s2">"description"</span><span class="o">:</span><span class="s2">"Summer video"</span><span class="p">,</span>
+  <span class="s2">"fileExtension"</span><span class="o">:</span><span class="s2">"avi"</span><span class="p">,</span>
+  <span class="s2">"shaChecksum"</span><span class="o">:</span><span class="s2">"c2f1cbb6bc46e5fa07c8b251615623a5af33181f"</span><span class="p">,</span>
+  <span class="s2">"fileSize"</span><span class="o">:</span><span class="mi">120988</span><span class="p">,</span>
+  <span class="s2">"height"</span><span class="o">:</span><span class="mi">640</span><span class="p">,</span>
+  <span class="s2">"width"</span><span class="o">:</span><span class="mi">480</span><span class="p">,</span>
+  <span class="s2">"entityId"</span><span class="o">:</span><span class="s2">"channel@topics.domain.com"</span>
+ <span class="p">}}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_____json_post">
+		<p>upload a new item to <strong>channel@topics.domain.com</strong></p>
+<dl>
+<dt><div class="highlight"><pre><code><span class="nx">POST</span> <span class="p">{</span><span class="s2">"filename"</span><span class="o">:</span> <span class="s2">"testimage.jpg"</span><span class="p">,</span>
+      <span class="s2">"title"</span><span class="o">:</span> <span class="s2">"Test Image"</span><span class="p">,</span>
+      <span class="s2">"description"</span><span class="o">:</span> <span class="s2">"My test image"</span><span class="p">,</span>
+      <span class="s2">"content-type"</span><span class="o">:</span> <span class="s2">"image/jpeg"</span><span class="p">,</span>
+      <span class="s2">"data"</span><span class="o">:</span> <span class="nx">image</span><span class="p">}</span>
+      <span class="nx">https</span><span class="o">:</span><span class="c1">//api.example.com/channel@topics.domain.com/media</span>
+</code></pre></div>
+</dt>
+<dd>
+<p>response</p>
+</dd>
+</dl>
+<div class="highlight"><pre><code><span class="c1">// 201 response</span>
+<span class="p">{</span>
+  <span class="s2">"id"</span><span class="o">:</span><span class="s2">"lETuJi8rPE4IfQrygN6rVtGx3"</span><span class="p">,</span>
+  <span class="s2">"fileName"</span><span class="o">:</span><span class="s2">"testimage.jpg"</span><span class="p">,</span>
+  <span class="s2">"author"</span><span class="o">:</span><span class="s2">"alice@domain.com"</span><span class="p">,</span>
+  <span class="s2">"title"</span><span class="o">:</span><span class="s2">"Test Image"</span><span class="p">,</span>
+  <span class="s2">"mimeType"</span><span class="o">:</span><span class="s2">"image/jpeg"</span><span class="p">,</span>
+  <span class="s2">"description"</span><span class="o">:</span><span class="s2">"My Test Image"</span><span class="p">,</span>
+  <span class="s2">"fileExtension"</span><span class="o">:</span><span class="s2">"jpg"</span><span class="p">,</span>
+  <span class="s2">"shaChecksum"</span><span class="o">:</span><span class="s2">"bc46e5fac2f1cbb607c8b253a5af33181f161562"</span><span class="p">,</span>
+  <span class="s2">"fileSize"</span><span class="o">:</span><span class="mi">60892</span><span class="p">,</span>
+  <span class="s2">"height"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"width"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"entityId"</span><span class="o">:</span><span class="s2">"channel@topics.domain.com"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/:channel/media/:media</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP: request
+Note right of API server: token generation
+API server-&gt;Media server: HTTP: auth request with token
+Media server-&gt;API server: XMPP: asks for request confirmation
+Note right of Media server: XEP-0070
+Note right of API server: checking request origin
+API server--&gt;Media server: XMPP: confirms request origin
+Media server-&gt;Buddycloud server: XMPP: check permissions to access media
+Note right of Buddycloud server: XEP-0060
+Buddycloud server--&gt;Media server: XMPP: response to permission request
+Media server--&gt;API server: HTTP: request response
+API server--&gt;client: forward response</div>
+<dl>
+<dt>Description</dt>
+<dd>Updates metadata, deletes or gets a channel media.</dd>
+<dt>Methods</dt>
+<dd><strong>POST</strong> - Updates the metadata of the specified media.</dd>
+<dd><strong>GET</strong> - Gets the specified media file.</dd>
+<dd><strong>DELETE</strong> - Deletes the specified media.</dd>
+<dt>Content-Type (POST)</dt>
+<dd><em>application/x-www-form-urlencoded</em></dd>
+<dt>Arguments (POST)</dt>
+<dd><strong>*filename</strong> (optional)* - the new media filename</dd>
+<dd><strong>*title</strong> (optional)* - the new title of the media</dd>
+<dd><strong>*description</strong> (optional)* - a new description for the media</dd>
+<dt>Parameters</dt>
+<dd><strong>maxheight</strong> (optional) - if the media can be previewed (image or video), returns a thumbnail bounded by the specified height. (GET
+only)</dd>
+<dd><strong>maxwidth</strong> (optional) - if the media can be previewed (image or video), returns a thumbnail bounded by specified width. (GET only)</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> - get or post succeeds, including the media file or the media metadata.</dd>
+<dd><strong>400 Bad Request</strong> - the client not provide correct authentication parameters.</dd>
+<dd><strong>401 Unauthorized</strong> - authentication is required, but not provided.</dd>
+<dd><strong>403 Forbidden</strong> - the user is not permitted to update, get or
+delete the media (e.g. if the user is not a private channel's owner
+or moderator).</dd>
+<dd><strong>404 Not Found</strong> - there is no media with such id.</dd>
+<dd><strong>412 Precondition Failed</strong> - if the client requests a thumbnail of
+a media with a not valid format (different from image or video).</dd>
+<dt>Notes</dt>
+<dd>GET operations for public channels don't need authentication.</dd>
+<dd>DELETE removes all media's information, including thumbnails and
+metadata.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id________json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id______json_post">JSON POST</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_json_delete">JSON DELETE</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id________json_get">
+		<dl>
+<dd>Get media</dd>
+</dl>
+<div class="highlight"><pre><code>GET https://api.example.com/channel@topics.domain.com/media/lETuJi8rPE4IfQrygN6rVtGx3?maxwidth<span class="o">=</span>640
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="c1">// 200 response with the media content</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id______json_post">
+		<dl>
+<dd>update the media information</dd>
+<dt><div class="highlight"><pre><code><span class="nx">POST</span> <span class="p">{</span><span class="s2">"filename"</span><span class="o">:</span> <span class="s2">"newname.jpg"</span><span class="p">,</span>
+      <span class="s2">"title"</span><span class="o">:</span> <span class="s2">"New Title"</span><span class="p">,</span>
+      <span class="s2">"description"</span><span class="o">:</span> <span class="s2">"New description"</span><span class="p">,</span>
+      <span class="nx">https</span><span class="o">:</span><span class="c1">//api.example.com/channel@topics.domain.com/media/lETuJi8rPE4IfQrygN6rVtGx3</span>
+</code></pre></div>
+</dt>
+<dd>
+<p>response, if everything went ok</p>
+</dd>
+</dl>
+<div class="highlight"><pre><code><span class="c1">// 200 response</span>
+<span class="p">{</span>
+  <span class="s2">"id"</span><span class="o">:</span><span class="s2">"lETuJi8rPE4IfQrygN6rVtGx3"</span><span class="p">,</span>
+  <span class="s2">"fileName"</span><span class="o">:</span><span class="s2">"newname.jpg"</span><span class="p">,</span>
+  <span class="s2">"author"</span><span class="o">:</span><span class="s2">"alice@domain.com"</span><span class="p">,</span>
+  <span class="s2">"title"</span><span class="o">:</span><span class="s2">"New Title"</span><span class="p">,</span>
+  <span class="s2">"mimeType"</span><span class="o">:</span><span class="s2">"image/jpeg"</span><span class="p">,</span>
+  <span class="s2">"description"</span><span class="o">:</span><span class="s2">"New description"</span><span class="p">,</span>
+  <span class="s2">"fileExtension"</span><span class="o">:</span><span class="s2">"jpg"</span><span class="p">,</span>
+  <span class="s2">"shaChecksum"</span><span class="o">:</span><span class="s2">"bc46e5fac2f1cbb607c8b253a5af33181f161562"</span><span class="p">,</span>
+  <span class="s2">"fileSize"</span><span class="o">:</span><span class="mi">60892</span><span class="p">,</span>
+  <span class="s2">"height"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"width"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"entityId"</span><span class="o">:</span><span class="s2">"channel@topics.domain.com"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_json_delete">
+		<dl>
+<dd>Delete the media</dd>
+</dl>
+<div class="highlight"><pre><code>DELETE https://api.example.com/channel@topics.domain.com/media/lETuJi8rPE4IfQrygN6rVtGx3
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="c1">// 200 response</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/:channel/media/avatar</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP: request
+Note right of API server: token generation
+API server-&gt;Media server: HTTP: auth request with token
+Media server-&gt;API server: XMPP: asks for request confirmation
+Note right of Media server: XEP-0070
+Note right of API server: checking request origin
+API server--&gt;Media server: XMPP: confirms request origin
+Media server-&gt;Buddycloud server: XMPP: check permissions to access media
+Note right of Buddycloud server: XEP-0060
+Buddycloud server--&gt;Media server: XMPP: response to permission request
+Media server--&gt;API server: HTTP: request response
+API server--&gt;client: forward response</div>
+<dl>
+<dt>Description</dt>
+<dd>Special endpoint that handles channel's avatars: uploads, updates,
+deletes or gets a channel avatar.</dd>
+<dt>Methods</dt>
+<dd><strong>PUT</strong> - Uploads an image to be the avatar of the specified
+channel. If there is a previous one, it is replaced.</dd>
+<dd><strong>POST</strong> - Updates the avatar <em>metadata</em>.</dd>
+<dd><strong>GET</strong> - Gets the avatar from the specified channel.</dd>
+<dd><strong>DELETE</strong> - Deletes the avatar from the specified channel.</dd>
+<dt>Content-Type (PUT)</dt>
+<dd><em>application/x-www-form-urlencoded</em></dd>
+<dd><em>multipart/form-data</em></dd>
+<dt>Arguments (PUT)</dt>
+<dd><strong><em>data</em></strong> - the avatar to upload</dd>
+<dd><strong><em>content-type</em></strong> - the avatar content-type</dd>
+<dd><strong>*filename</strong> (optional)* - the avatar original filename</dd>
+<dd><strong>*title</strong> (optional)* - the title of the avatar</dd>
+<dd><strong>*description</strong> (optional)* - a description of the avatar</dd>
+<dt>Arguments (POST)</dt>
+<dd><strong>*filename</strong> (optional)* - the avatar new filename</dd>
+<dd><strong>*title</strong> (optional)* - the new title of the avatar</dd>
+<dd><strong>*description</strong> (optional)* - a new description for the avatar</dd>
+<dt>Parameters</dt>
+<dd><strong>maxheight</strong> (optional) - returns an avatar thumbnail that fits the
+specified height. Only allowed for GET.</dd>
+<dd><strong>maxwidth</strong> (optional) - returns an avatar thumbnail that fits the
+specified width. Only allowed for GET.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> - if get succeeds, including the avatar file.</dd>
+<dd><strong>201 Created</strong> - if put succeeds, including the successfully
+uploaded avatar metadata.</dd>
+<dd><strong>400 Bad Request</strong> - if the client not provide proper
+authentication fields.</dd>
+<dd><strong>401 Unauthorized</strong> - if authentication is required, but not
+provided.</dd>
+<dd><strong>403 Forbidden</strong> - if the user is not permitted to put or delete
+the channel's avatar (e.g. if the user is not the channel's owner or
+moderator).</dd>
+<dd><strong>404 Not Found</strong> - there is no avatar set to the specified channel.</dd>
+<dt>Note</dt>
+<dd>All avatars are public, that means that the GET operation doesn't
+need authentication.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_json_put">JSON PUT</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id__json_delete">JSON DELETE</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_json_put">
+		<p>upload a new avatar</p>
+<dl>
+<dt><div class="highlight"><pre><code><span class="nx">PUT</span> <span class="p">{</span><span class="s2">"filename"</span><span class="o">:</span> <span class="s2">"avatar.jpg"</span><span class="p">,</span>
+      <span class="s2">"title"</span><span class="o">:</span> <span class="s2">"My New Avatar"</span><span class="p">,</span>
+      <span class="s2">"description"</span><span class="o">:</span> <span class="s2">"My brand new avatar"</span><span class="p">,</span>
+      <span class="s2">"content-type"</span><span class="o">:</span> <span class="s2">"image/jpeg"</span><span class="p">,</span>
+      <span class="s2">"data"</span><span class="o">:</span> <span class="nx">image</span><span class="p">}</span>
+      <span class="nx">https</span><span class="o">:</span><span class="c1">//api.example.com/alice@domain.com/media/avatar</span>
+</code></pre></div>
+</dt>
+<dd>
+<p>response, if everything went ok</p>
+</dd>
+</dl>
+<div class="highlight"><pre><code><span class="c1">// 201 response</span>
+<span class="p">{</span>
+  <span class="s2">"id"</span><span class="o">:</span><span class="s2">"lETuJi8rPE4IfQrygN6rVtGx3"</span><span class="p">,</span>
+  <span class="s2">"fileName"</span><span class="o">:</span><span class="s2">"avatar.jpg"</span><span class="p">,</span>
+  <span class="s2">"author"</span><span class="o">:</span><span class="s2">"alice@domain.com"</span><span class="p">,</span>
+  <span class="s2">"title"</span><span class="o">:</span><span class="s2">"My New Avatar"</span><span class="p">,</span>
+  <span class="s2">"mimeType"</span><span class="o">:</span><span class="s2">"image/jpeg"</span><span class="p">,</span>
+  <span class="s2">"description"</span><span class="o">:</span><span class="s2">"My brand new avatar"</span><span class="p">,</span>
+  <span class="s2">"fileExtension"</span><span class="o">:</span><span class="s2">"jpg"</span><span class="p">,</span>
+  <span class="s2">"shaChecksum"</span><span class="o">:</span><span class="s2">"bc46e5fac2f1cbb607c8b253a5af33181f161562"</span><span class="p">,</span>
+  <span class="s2">"fileSize"</span><span class="o">:</span><span class="mi">60892</span><span class="p">,</span>
+  <span class="s2">"height"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"width"</span><span class="o">:</span><span class="mi">312</span><span class="p">,</span>
+  <span class="s2">"entityId"</span><span class="o">:</span><span class="s2">"alice@domain.com"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_json_get">
+		<dl>
+<dd>Visualize Alice's new avatar</dd>
+</dl>
+<div class="highlight"><pre><code>GET https://api.example.com/alice@domain.com/media/avatar
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="c1">// 200 response with the picture content</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id__json_delete">
+		<p>Delete the avatar</p>
+<div class="highlight"><pre><code>DELETE https://api.example.com/alice@domain.com/media/avatar
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="c1">// 200 response</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="channel_management_">Channel Management</h2>
+<h3>/:channel</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Used to create a topic channel.</dd>
+<dt>Methods</dt>
+<dd><strong>POST</strong> - Creates a topic channel with default configuration.</dd>
+<dt>Parameters</dt>
+<dd>(none)</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is not provided.</dd>
+<dd><strong>403 Forbidden</strong> if the user is not allowed to create a channel.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id__post">POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id__post">
+		<p>Crates the topic channel
+"talesofalice@topics.example.com":</p>
+<div class="highlight"><pre><code>POST /talesofalice@topics.example.com
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/:channel/similar</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;Channel Directory: XMPP request
+Channel Directory--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Retrieves similar channels to a given channel based on the social
+graph indexed by the <a href="Channel Directory Project" title="wikilink">Channel
+Directory</a>.</dd>
+<dt>Content Type</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves the list of similar channels of a given channel.</dd>
+<dt>Parameters</dt>
+<dd><strong><em>max</em></strong> (optional) - the maximum number of items to be returned.</dd>
+<dd><strong><em>index</em></strong> (optional) - the index for the first item to be
+returned.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_get">GET</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_get">
+		<p>Retrieve similar channels to node "alice@example.com":</p>
+<div class="highlight"><pre><code>GET /alice@example.com/similar
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span> <span class="s2">"items"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"channelType"</span> <span class="o">:</span> <span class="s2">"topic"</span><span class="p">,</span>
+        <span class="s2">"creationDate"</span> <span class="o">:</span> <span class="s2">"2012-04-24T09:13:51+0000"</span><span class="p">,</span>
+        <span class="s2">"defaultAffiliation"</span> <span class="o">:</span> <span class="s2">"publisher"</span><span class="p">,</span>
+        <span class="s2">"description"</span> <span class="o">:</span> <span class="s2">"/dev/hack"</span><span class="p">,</span>
+        <span class="s2">"jid"</span> <span class="o">:</span> <span class="s2">"team@topics.buddycloud.org"</span><span class="p">,</span>
+        <span class="s2">"title"</span> <span class="o">:</span> <span class="s2">"buddycloud dev team"</span>
+      <span class="p">},</span>
+      <span class="p">{</span> <span class="s2">"channelType"</span> <span class="o">:</span> <span class="s2">"personal"</span><span class="p">,</span>
+        <span class="s2">"creationDate"</span> <span class="o">:</span> <span class="s2">"2012-02-05T13:31:12+0000"</span><span class="p">,</span>
+        <span class="s2">"defaultAffiliation"</span> <span class="o">:</span> <span class="s2">"publisher"</span><span class="p">,</span>
+        <span class="s2">"description"</span> <span class="o">:</span> <span class="s2">"Everything about Bob."</span><span class="p">,</span>
+        <span class="s2">"jid"</span> <span class="o">:</span> <span class="s2">"bob@example.com"</span><span class="p">,</span>
+        <span class="s2">"title"</span> <span class="o">:</span> <span class="s2">"Bob's Posts"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+  <span class="s2">"rsm"</span> <span class="o">:</span> <span class="p">{</span> <span class="s2">"count"</span> <span class="o">:</span> <span class="s2">"2"</span><span class="p">,</span>
+      <span class="s2">"index"</span> <span class="o">:</span> <span class="s2">"0"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="content_sync_">Content Sync</h2>
+<h3>/sync</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;XMPP server: create XMPP connection
+XMPP server--&gt;API server: XMPP connection created
+API server-&gt;Buddycloud server: XMPP request
+Buddycloud server--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Allows access to the latest posts of all channel nodes a user
+subscribes to. Only JSON representation is available for this query
+(see <a href="#Channel_Content_Formats" title="wikilink">#Channel Content
+Formats</a>).</dd>
+<dt>Content Types</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves the latests items of all channel nodes an user
+subcribes to.</dd>
+<dt>Arguments (GET)</dt>
+<dd><strong><em>since</em></strong> - is used to filter out messages before a certain
+date/time.</dd>
+<dd><strong><em>max</em></strong> - the maximum number of posts to be returned per channel.</dd>
+<dd><strong><em>summary</em></strong> - (optional) if true, returns only a summary
+information per channel.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is not provided.</dd>
+<dt>Notes</dt>
+<dd>The since argument must be given in the ISO 8601, following the
+given format: CCYY-MM-DDThh:mm:ssT. Eg.: 2012-11-01T00:00:00Z</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_________json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_json_get_with_summary">JSON GET with summary</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_________json_get">
+		<ul>
+<li>retrieve <strong>all</strong> channel posts since: <code>2012-11-01T00:00:00Z</code></li>
+<li>but not more than <code>2</code> per channel</li>
+</ul>
+<div class="highlight"><pre><code>GET /sync?since<span class="o">=</span>2012-11-01T00:00:00Z&amp;max<span class="o">=</span>2
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span> <span class="s2">"/user/bob@example.com/posts"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"author"</span> <span class="o">:</span> <span class="s2">"bob@example.com"</span><span class="p">,</span>
+        <span class="s2">"content"</span> <span class="o">:</span> <span class="s2">"Nice post."</span><span class="p">,</span>
+        <span class="s2">"id"</span> <span class="o">:</span> <span class="s2">"a8eb0384-b504-4aab-9b51-6174a7f9efe7"</span><span class="p">,</span>
+        <span class="s2">"published"</span> <span class="o">:</span> <span class="s2">"2012-11-01T20:06:01.787Z"</span><span class="p">,</span>
+        <span class="s2">"replyTo"</span> <span class="o">:</span> <span class="s2">"08795523-b719-4329-b334-3ee1667aa9c3"</span><span class="p">,</span>
+        <span class="s2">"updated"</span> <span class="o">:</span> <span class="s2">"2012-11-01T20:06:01.787Z"</span>
+      <span class="p">}</span> <span class="p">],</span>
+  <span class="s2">"/user/alice@example.com/posts"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"author"</span> <span class="o">:</span> <span class="s2">"bob@example"</span><span class="p">,</span>
+        <span class="s2">"content"</span> <span class="o">:</span> <span class="s2">"Is it a nice post?"</span><span class="p">,</span>
+        <span class="s2">"id"</span> <span class="o">:</span> <span class="s2">"209aceda-32ef-4754-9746-c1dbc5716359"</span><span class="p">,</span>
+        <span class="s2">"published"</span> <span class="o">:</span> <span class="s2">"2012-11-02T03:42:28.510Z"</span><span class="p">,</span>
+        <span class="s2">"updated"</span> <span class="o">:</span> <span class="s2">"2012-11-02T03:42:28.510Z"</span>
+      <span class="p">},</span>
+      <span class="p">{</span> <span class="s2">"author"</span> <span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">,</span>
+        <span class="s2">"content"</span> <span class="o">:</span> <span class="s2">"Ok"</span><span class="p">,</span>
+        <span class="s2">"id"</span> <span class="o">:</span> <span class="s2">"17163726-ea90-453e-ad25-455336a83fd4"</span><span class="p">,</span>
+        <span class="s2">"published"</span> <span class="o">:</span> <span class="s2">"2012-11-02T03:41:55.484Z"</span><span class="p">,</span>
+        <span class="s2">"replyTo"</span> <span class="o">:</span> <span class="s2">"9b7724d0-7ef5-4331-8974-81754abb7ba0"</span><span class="p">,</span>
+        <span class="s2">"updated"</span> <span class="o">:</span> <span class="s2">"2012-11-02T03:41:55.484Z"</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_json_get_with_summary">
+		<p>true=</p>
+<ul>
+<li>retrieve <strong>all</strong> post counters since: <code>2012-11-01T00:00:00Z</code></li>
+</ul>
+<div class="highlight"><pre><code>GET /sync?since<span class="o">=</span>2012-11-01T00:00:00Z&amp;summary<span class="o">=</span><span class="nb">true</span>&amp;max<span class="o">=</span>1000
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span> <span class="s2">"/user/bob@example.com/posts"</span> <span class="o">:</span> <span class="p">{</span>
+    <span class="s2">"mentionsCount"</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"totalCount"</span><span class="o">:</span> <span class="mi">121</span><span class="p">,</span>
+    <span class="s2">"repliesCount"</span><span class="o">:</span> <span class="mi">34</span><span class="p">,</span>
+    <span class="s2">"postsThisWeek"</span><span class="o">:</span> <span class="p">[</span>
+      <span class="s2">"2013-11-08T19:33:33.103Z"</span><span class="p">,</span>
+      <span class="s2">"2013-11-06T12:12:34.986Z"</span><span class="p">,</span>
+      <span class="s2">"2013-11-05T23:45:31.609Z"</span><span class="p">,</span>
+      <span class="s2">"2013-11-05T14:42:30.625Z"</span><span class="p">,</span>
+      <span class="s2">"2013-11-05T14:34:43.580Z"</span><span class="p">,</span>
+      <span class="s2">"2013-11-05T14:20:49.844Z"</span><span class="p">,</span>
+      <span class="s2">"2013-11-03T19:27:16.048Z"</span><span class="p">,</span>
+      <span class="s2">"2013-11-03T18:46:54.726Z"</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="s2">"/user/alice@example.com/posts"</span> <span class="o">:</span> <span class="p">{</span>
+    <span class="s2">"mentionsCount"</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">"totalCount"</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"repliesCount"</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">"postsThisWeek"</span><span class="o">:</span> <span class="p">[]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="notification_settings_">Notification Settings</h2>
+<h3>/notification_settings</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;Pusher: XMPP request
+Pusher--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Allows retrieval and modification on the user's notification
+settings.</dd>
+<dt>Content Types</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves the user's notification settings.</dd>
+<dd><strong>POST</strong> - Updates the user's notification settings.</dd>
+<dd><strong>DELETE</strong> - Deletes user's notification settings.</dd>
+<dt>Parameters</dt>
+<dd><strong>type</strong> - Type of notification transport (email, gcm)</dd>
+<dd><strong>target (optional)</strong> - Target address (email address, gcm registration id)</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is not provided.</dd>
+<dt>Notes</dt>
+<dd>During a POST, any notification setting can be omitted. Thus, the
+setting will only be updated when provided.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id__________json_get">JSON GET</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_______json_post">JSON POST</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id___json_delete">JSON DELETE</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id__________json_get">
+		<p>Retrieves notification settings:</p>
+<div class="highlight"><pre><code>GET /notification_settings?type<span class="o">=</span>email&amp;target<span class="o">=</span>mail@alice.com
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">[{</span>
+  <span class="s2">"target"</span><span class="o">:</span> <span class="s2">"mail@alice.com"</span><span class="p">,</span>
+  <span class="s2">"postAfterMe"</span><span class="o">:</span> <span class="s2">"true"</span><span class="p">,</span>
+  <span class="s2">"postMentionedMe"</span><span class="o">:</span> <span class="s2">"true"</span><span class="p">,</span>
+  <span class="s2">"postOnMyChannel"</span><span class="o">:</span> <span class="s2">"true"</span><span class="p">,</span>
+  <span class="s2">"postOnSubscribedChannel"</span><span class="o">:</span> <span class="s2">"false"</span><span class="p">,</span>
+  <span class="s2">"followMyChannel "</span><span class="o">:</span> <span class="s2">"true"</span><span class="p">,</span>
+  <span class="s2">"followRequest"</span><span class="o">:</span> <span class="s2">"true"</span>
+<span class="p">}]</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_______json_post">
+		<p>Updates notification settings:</p>
+<div class="highlight"><pre><code>POST /notification_settings
+Content-Type: application/json
+
+
+<span class="o">{</span>
+  <span class="s2">"type"</span>: <span class="s2">"email"</span>,
+  <span class="s2">"target"</span>: <span class="s2">"mail@alice.com"</span>,
+  <span class="s2">"postAfterMe"</span>: <span class="s2">"true"</span>,
+  <span class="s2">"postMentionedMe"</span>: <span class="s2">"true"</span>,
+  <span class="s2">"postOnMyChannel"</span>: <span class="s2">"true"</span>,
+  <span class="s2">"postOnSubscribedChannel"</span>: <span class="s2">"false"</span>,
+  <span class="s2">"followMyChannel "</span>: <span class="s2">"false"</span>,
+  <span class="s2">"followRequest"</span>: <span class="s2">"false"</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">[{</span>
+  <span class="s2">"target"</span><span class="o">:</span> <span class="s2">"mail@alice.com"</span><span class="p">,</span>
+  <span class="s2">"postAfterMe"</span><span class="o">:</span> <span class="s2">"true"</span><span class="p">,</span>
+  <span class="s2">"postMentionedMe"</span><span class="o">:</span> <span class="s2">"true"</span><span class="p">,</span>
+  <span class="s2">"postOnMyChannel"</span><span class="o">:</span> <span class="s2">"true"</span><span class="p">,</span>
+  <span class="s2">"postOnSubscribedChannel"</span><span class="o">:</span> <span class="s2">"false"</span><span class="p">,</span>
+  <span class="s2">"followMyChannel "</span><span class="o">:</span> <span class="s2">"false"</span><span class="p">,</span>
+  <span class="s2">"followRequest"</span><span class="o">:</span> <span class="s2">"false"</span>
+<span class="p">}]</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id___json_delete">
+		<p>Deletes notification settings:</p>
+<div class="highlight"><pre><code>DELETE /notification_settings
+Content-Type: application/json
+
+
+<span class="o">{</span>
+  <span class="s2">"type"</span>: <span class="s2">"email"</span>,
+  <span class="s2">"target"</span>: <span class="s2">"mail@alice.com"</span>,
+<span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="search_and_recommendations_">Search and Recommendations</h2>
+<h3>/search</h3>
+<div class="js_sequence_diagram">client-&gt;API server: request
+API server-&gt;Channel Directory: forward request
+Channel Directory--&gt;API server: response
+API server--&gt;client: forward response</div>
+<dl>
+<dt>Description</dt>
+<dd>Performs a search over channels' metadata and posts' content indexed
+by the <a href="Channel Directory Project" title="wikilink">Channel Directory</a>.</dd>
+<dt>Content Types</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Performs a search query to the channel directory. It can
+be performed over posts(type=content) or channels(type=metadata).</dd>
+<dt>Arguments (GET)</dt>
+<dd><strong><em>type</em></strong> - <strong>metadata</strong> or <strong>content</strong>.</dd>
+<dd><strong><em>q</em></strong> - the search criteria.</dd>
+<dd><strong><em>max</em></strong> (optional) - the maximum number of items to be returned.</dd>
+<dd><strong><em>index</em></strong> (optional) - the index for the first item to be
+returned.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>400 Bad Request</strong> - if the client does not provide the mandatory
+fields.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id_json_get_for_metadata">JSON GET for metadata</a></li>
+	<li><a data-toggle="tab" href="#togglable_tabs_id_json_get_for_content">JSON GET for content</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id_json_get_for_metadata">
+		<p>Retrieve channels that have the keyword
+<strong>hack</strong> in their metadata:</p>
+<div class="highlight"><pre><code>GET /search?type<span class="o">=</span>metadata&amp;q<span class="o">=</span>hack
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span><span class="s2">"items"</span><span class="o">:</span>
+  <span class="p">[{</span><span class="s2">"jid"</span><span class="o">:</span><span class="s2">"team@topics.buddycloud.org"</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="o">:</span><span class="s2">"/dev/hack"</span><span class="p">,</span>
+    <span class="s2">"creationDate"</span><span class="o">:</span><span class="s2">"2012-04-24T09:13:51+0000"</span><span class="p">,</span>
+    <span class="s2">"title"</span><span class="o">:</span><span class="s2">"buddycloud dev team"</span><span class="p">,</span>
+    <span class="s2">"channelType"</span><span class="o">:</span><span class="s2">"topic"</span><span class="p">,</span>
+    <span class="s2">"defaultAffiliation"</span><span class="o">:</span><span class="s2">"publisher"</span><span class="p">}</span>
+  <span class="p">],</span>
+ <span class="s2">"rsm"</span><span class="o">:</span>
+  <span class="p">{</span><span class="s2">"index"</span><span class="o">:</span><span class="s2">"0"</span><span class="p">,</span><span class="s2">"count"</span><span class="o">:</span><span class="s2">"1"</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+	<div class="tab-pane fade" id="togglable_tabs_id_json_get_for_content">
+		<p>Retrieve posts that have the keyword <strong>hack</strong>
+in their content:</p>
+<div class="highlight"><pre><code>GET /search?type<span class="o">=</span>content&amp;q<span class="o">=</span>hack
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span> <span class="s2">"items"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"author"</span> <span class="o">:</span> <span class="s2">"jayteeuk@wyrddreams.org"</span><span class="p">,</span>
+        <span class="s2">"content"</span> <span class="o">:</span> <span class="s2">"Hacking in the evening of Online Services Sprint, Day One."</span><span class="p">,</span>
+        <span class="s2">"id"</span> <span class="o">:</span> <span class="s2">"1c6cf8b1-cfad-41fb-864a-73accf614484"</span><span class="p">,</span>
+        <span class="s2">"in_reply_to"</span> <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">"parent_fullid"</span> <span class="o">:</span> <span class="s2">"/user/jayteeuk@wyrddreams.org/posts"</span><span class="p">,</span>
+        <span class="s2">"parent_simpleid"</span> <span class="o">:</span> <span class="s2">"jayteeuk@wyrddreams.org"</span><span class="p">,</span>
+        <span class="s2">"published"</span> <span class="o">:</span> <span class="s2">"2012-11-12T21:53:49+0000"</span><span class="p">,</span>
+        <span class="s2">"updated"</span> <span class="o">:</span> <span class="s2">"2012-11-12T21:53:49+0000"</span>
+      <span class="p">},</span>
+      <span class="p">{</span> <span class="s2">"author"</span> <span class="o">:</span> <span class="s2">"tester1234@buddycloud.org"</span><span class="p">,</span>
+        <span class="s2">"content"</span> <span class="o">:</span> <span class="s2">"hack hack"</span><span class="p">,</span>
+        <span class="s2">"id"</span> <span class="o">:</span> <span class="s2">"d3cd8bc5-5722-42cd-9b95-1313fbe6644b"</span><span class="p">,</span>
+        <span class="s2">"in_reply_to"</span> <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">"parent_fullid"</span> <span class="o">:</span> <span class="s2">"/user/tester1234@buddycloud.org/posts"</span><span class="p">,</span>
+        <span class="s2">"parent_simpleid"</span> <span class="o">:</span> <span class="s2">"tester1234@buddycloud.org"</span><span class="p">,</span>
+        <span class="s2">"published"</span> <span class="o">:</span> <span class="s2">"2012-09-25T23:58:00+0000"</span><span class="p">,</span>
+        <span class="s2">"updated"</span> <span class="o">:</span> <span class="s2">"2012-09-25T23:58:00+0000"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+  <span class="s2">"rsm"</span> <span class="o">:</span> <span class="p">{</span> <span class="s2">"count"</span> <span class="o">:</span> <span class="s2">"2"</span><span class="p">,</span>
+      <span class="s2">"index"</span> <span class="o">:</span> <span class="s2">"0"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><hr>
+<h3>/recommendations</h3>
+<div class="js_sequence_diagram">client-&gt;API server: request
+API server-&gt;Channel Directory: forward request
+Channel Directory--&gt;API server: response
+API server--&gt;client: forward response</div>
+<dl>
+<dt>Description</dt>
+<dd>Recommends channels for a given user based on taste data indexed by
+the <a href="Channel Directory Project" title="wikilink">Channel Directory</a>.</dd>
+<dt>Content Types</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves channels recommendations for a given user.</dd>
+<dt>Arguments (GET)</dt>
+<dd><strong><em>user</em></strong> - the jid of the user to be recommended.</dd>
+<dd><strong><em>max</em></strong> (optional) - the maximum number of items to be returned.</dd>
+<dd><strong><em>index</em></strong> (optional) - the index for the first item to be
+returned.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>400 Bad Request</strong> - if the client does not provide the mandatory
+fields.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id___________json_get">JSON GET</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id___________json_get">
+		<p>Recommend channels for user <strong>alice@example.com</strong>:</p>
+<div class="highlight"><pre><code>GET /recommendations?user<span class="o">=</span>alice@example.com
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span> <span class="s2">"items"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"channelType"</span> <span class="o">:</span> <span class="s2">"topic"</span><span class="p">,</span>
+        <span class="s2">"creationDate"</span> <span class="o">:</span> <span class="s2">"2012-04-24T09:13:51+0000"</span><span class="p">,</span>
+        <span class="s2">"defaultAffiliation"</span> <span class="o">:</span> <span class="s2">"publisher"</span><span class="p">,</span>
+        <span class="s2">"description"</span> <span class="o">:</span> <span class="s2">"/dev/hack"</span><span class="p">,</span>
+        <span class="s2">"jid"</span> <span class="o">:</span> <span class="s2">"team@topics.buddycloud.org"</span><span class="p">,</span>
+        <span class="s2">"title"</span> <span class="o">:</span> <span class="s2">"buddycloud dev team"</span>
+      <span class="p">},</span>
+      <span class="p">{</span> <span class="s2">"channelType"</span> <span class="o">:</span> <span class="s2">"personal"</span><span class="p">,</span>
+        <span class="s2">"creationDate"</span> <span class="o">:</span> <span class="s2">"2012-02-05T13:31:12+0000"</span><span class="p">,</span>
+        <span class="s2">"defaultAffiliation"</span> <span class="o">:</span> <span class="s2">"publisher"</span><span class="p">,</span>
+        <span class="s2">"description"</span> <span class="o">:</span> <span class="s2">"Everything about Bob."</span><span class="p">,</span>
+        <span class="s2">"jid"</span> <span class="o">:</span> <span class="s2">"bob@example.com"</span><span class="p">,</span>
+        <span class="s2">"title"</span> <span class="o">:</span> <span class="s2">"Bob's Posts"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+  <span class="s2">"rsm"</span> <span class="o">:</span> <span class="p">{</span> <span class="s2">"count"</span> <span class="o">:</span> <span class="s2">"2"</span><span class="p">,</span>
+      <span class="s2">"index"</span> <span class="o">:</span> <span class="s2">"0"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="most_active_">Most Active</h2>
+<h3>/most_active</h3>
+<div class="js_sequence_diagram">client-&gt;API server: request
+API server-&gt;Channel Directory: forward request
+Channel Directory--&gt;API server: response
+API server--&gt;client: forward response</div>
+<dl>
+<dt>Description</dt>
+<dd>Retrieves the most active channels among the channels indexed by the
+<a href="Channel Directory Project" title="wikilink">Channel Directory</a>. The most
+active channels are the ones that had more posts in the window of a
+day.</dd>
+<dt>Content Types</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>GET</strong> - Retrieves the most active channels.</dd>
+<dt>Arguments (GET)</dt>
+<dd><strong><em>max</em></strong> (optional) - the maximum number of items to be returned.</dd>
+<dd><strong><em>index</em></strong> (optional) - the index for the first item to be
+returned.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+</dl>
+<p>Examples</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id____________json_get">JSON GET</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id____________json_get">
+		<p>Retrieve the most active channels:</p>
+<div class="highlight"><pre><code>GET /most_active
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
+
+
+<span class="p">{</span> <span class="s2">"items"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"channelType"</span> <span class="o">:</span> <span class="s2">"topic"</span><span class="p">,</span>
+        <span class="s2">"creationDate"</span> <span class="o">:</span> <span class="s2">"2012-08-05T14:57:26+0000"</span><span class="p">,</span>
+        <span class="s2">"defaultAffiliation"</span> <span class="o">:</span> <span class="s2">"publisher"</span><span class="p">,</span>
+        <span class="s2">"description"</span> <span class="o">:</span> <span class="s2">"This is an RSS feed from the BBC News - World website.  Original: http://feeds.bbci.co.uk/news/world/rss.xml"</span><span class="p">,</span>
+        <span class="s2">"jid"</span> <span class="o">:</span> <span class="s2">"bbc_news_-_world@topics.buddycloud.org"</span><span class="p">,</span>
+        <span class="s2">"title"</span> <span class="o">:</span> <span class="s2">"BBC News - World"</span>
+      <span class="p">},</span>
+      <span class="p">{</span> <span class="s2">"channelType"</span> <span class="o">:</span> <span class="s2">"personal"</span><span class="p">,</span>
+        <span class="s2">"creationDate"</span> <span class="o">:</span> <span class="s2">"2011-10-06T12:02:58+0000"</span><span class="p">,</span>
+        <span class="s2">"defaultAffiliation"</span> <span class="o">:</span> <span class="s2">"publisher"</span><span class="p">,</span>
+        <span class="s2">"description"</span> <span class="o">:</span> <span class="s2">"Flipping you the channel bits. Night and day, the distributed way"</span><span class="p">,</span>
+        <span class="s2">"jid"</span> <span class="o">:</span> <span class="s2">"simon@buddycloud.org"</span><span class="p">,</span>
+        <span class="s2">"title"</span> <span class="o">:</span> <span class="s2">"Simon's chonnel"</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+  <span class="s2">"rsm"</span> <span class="o">:</span> <span class="p">{</span> <span class="s2">"count"</span> <span class="o">:</span> <span class="s2">"2"</span><span class="p">,</span>
+      <span class="s2">"index"</span> <span class="o">:</span> <span class="s2">"0"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div><h2 id="match_contacts_">Match Contacts</h2>
+<h3>/match_contacts</h3>
+<div class="js_sequence_diagram">client-&gt;API server: HTTP request
+API server-&gt;Friend Finder: XMPP request
+Friend Finder--&gt;API server: XMPP response
+API server--&gt;client: HTTP response</div>
+<dl>
+<dt>Description</dt>
+<dd>Publishes user contacts' hashes and matches previously reported hashes to jids. A hash is computed as following: sha256(provider:id), eg: sha256(facebook:1015747641) = 0a22c6c85a47116509f8fbb7688c98ac480651db3c54dd3fcd2ce34d48a5025b.</dd>
+<dt>Attributes</dt>
+<dd><em>mine</em> - array of this user's hashes to be reported to the friend finder.</dd>
+<dd><em>others</em> - array of hashes to be matched by the friend finder.</dd>
+<dt>Accept</dt>
+<dd>JSON <em>(application/json)</em></dd>
+<dt>Methods</dt>
+<dd><strong>POST</strong> - Publishes and matches hashes to jids.</dd>
+<dt>Responses</dt>
+<dd><strong>200 OK</strong> on success.</dd>
+<dd><strong>401 Unauthorized</strong> if authentication is required, but not
+provided.</dd>
+</dl>
+<p>Example</p>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#togglable_tabs_id___post">POST</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="togglable_tabs_id___post">
+		<p>Publishes and matches hashes to jids</p>
+<div class="highlight"><pre><code>POST /match_contacts
+
+
+<span class="o">{</span>
+  <span class="s2">"mine"</span>: <span class="o">[</span><span class="s2">"0a22c6c85a47116509f8fbb7688c98ac480651db3c54dd3fcd2ce34d48a5025b"</span><span class="o">]</span>,
+  <span class="s2">"others"</span>: <span class="o">[</span><span class="s2">"023476e7b8be135f970d65f9bee53bfc66c43742815cdcd2c7f53e51f3937b17"</span>,   <span class="s2">"bcee94d395fe9cd76dfae390e006a98032144fb48dc8181448c4cd192ec4b75c"</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><code><span class="mi">200</span> <span class="nx">OK</span>
+
+
+<span class="p">{</span>
+    <span class="s2">"items"</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">"jid"</span><span class="o">:</span> <span class="s2">"alice@example.com"</span><span class="p">,</span>
+            <span class="s2">"matched-hash"</span><span class="o">:</span> <span class="s2">"023476e7b8be135f970d65f9bee53bfc66c43742815cdcd2c7f53e51f3937b17"</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+	</div>
+</div>
+    </div>
+      </div>
+  </div>
+  <nav id="navbar navbar-default navbar-fixed-bottom" role="navigation">
+      <div class="container">
+          <p class="text-muted pull-right">
+              Made with love. 
+              <a href="https://github.com/buddycloud/buddycloud.com">
+                  Corrections welcomed
+              </a>
+              .
+          </p>
+      </div>
+  </nav>
+</div>
+
+  <script src="theme/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="theme/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="theme/vendor/buddycloud-styles/dist/js/buddycloud-styles.min.js"></script>
+  <script src="theme/vendor/raphael/raphael-min.js"></script>
+  <script src="theme/vendor/underscore/underscore-min.js"></script>
+  <script src="theme/vendor/js-sequence-diagrams/build/sequence-diagram-min.js"></script>
+  <script src="theme/js/sequence-diagrams.js"></script>
+  <script src="theme/vendor/isotope/isotope.pkgd.min.js"></script>
+  <script src="theme/vendor/isotope/cells-by-row.js"></script>
+  <script src="theme/js/isotope-config.js"></script>
+</body>
+</html>
